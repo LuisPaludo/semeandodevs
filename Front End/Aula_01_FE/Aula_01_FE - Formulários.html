@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt - BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <fieldset>
+        <legend>Formulário</legend>
+        <form action="#" method="get">
+            <input type="text" maxlength="50" size="50" spellcheck="true" disabled value="Texto">
+            <br>
+            <label for="Nome">Nome:</label>
+            <input type="text" maxlength="50" size="50" spellcheck="true" placeholder="Digite Aqui" name="Nome" id="Nome" required>
+            <br>
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+            <br>
+            <input type="submit" value="Enviar">
+            <br>
+            <label for="data.nascimento">Data de nascimento</label>
+            <input type="date" name="data.nascimento" id="data.nascimento" value="2023-03-14" min="2023-01-01" >
+            <label for="data.hora">Data e Hora</label>
+            <input type="datetime-local" name="data.hora" id="data.hora">
+            <label for="data.mês">Mês</label>
+            <input type="mon" name="data.mês" id="data.mês">
+            <input type="week">
+            <input type="color">
+            <input type="time">
+            <br>
+            <input type="number" min="0" max="100">
+            <input type="range" min="0" max="100" step="10">
+            <input type="search">
+            <p>Cores que você gosta
+                <label for="vermelho">Vermelho</label>
+                <input type="checkbox" name="cor" id="vermelho">
+                <label for="preto">Preto</label>
+                <input type="checkbox" name="cor" id="preto">
+            </p>
+            <p>Seu Sexo
+                <label for="f">Feminino</label>
+                <input type="radio" name="sexo" id="f">
+                <label for="m">Masculino</label>
+                <input type="radio" name="sexo" id="m">
+            </p>
+            <label for="email">E-mail</label>
+            <input type="em" name="email" id="email" required>
+            <label for="site">URL</label>
+            <input type="url" name="site" id="site" required>
+            <br>
+            <label for="file">Arquivo</label>
+            <input type="file" name="file" id="file">
+            <input type="hidden" name="hidden" id="hidden" value="to condido">
+
+            <br>
+            <label for="selec">Sexo</label>
+            <select name="select" id="select">
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+                <option value="T">Transformers</option>
+            </select>
+            <br>
+            <label for="mensagem">Mensagem</label>
+            <textarea name="textarea" id="mensagem" cols="30" rows="10" placeholder="Digite Sua mensagem"></textarea>
+            <br>
+            <input type="button" value="Botão Qualquer">
+            <input type="reset" value="Limpar Formulário">
+
+            <br>
+
+        </form>
+    </fieldset>
+</body>
+</html>
