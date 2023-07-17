@@ -1,0 +1,86 @@
+<h1>Uso de pipes padrão</h1>
+
+<!-- Transforme esse número usando um pipe que deixe-o com somente duas casas decimais -->
+<div>
+    {{ 3.141516 | number: '1.0-2' }}
+</div>
+
+
+<!-- Transforme esse número usando um pipe e deixe ele com 5 zeros a esquerda e 3 casas decimais -->
+<div>
+    {{ 4.2 | number: '6.3-3' }}
+</div>
+
+<!-- Use um pipe do Angular para transformar os valores de acordo com as moedas citadas (real e dólar)-->
+<div>
+    Hoje com {{5.20 | currency: 'BRL' }}, você consegue comprar {{1 | currency}}
+</div>
+
+<!-- Transforme a data para o formato "21 de dezembro de 2022" -->
+<div>
+    {{ dataAtual }} -----> {{ dataAtual | date: 'longDate'}}
+</div>
+
+<!-- Mostre a variável json que está no ts -->
+<div>
+   {{json}} -----> {{ json | json }}
+</div>
+
+<!-- Transforme o texto para caixa alta -->
+<div>
+    {{ 'texto em caixa alta' | uppercase }}
+</div>
+
+<!-- Transforme o texto em caixa baixa -->
+<div>
+    {{ 'TEXTO EM CAIXA BAIXA' | lowercase }}
+</div>
+
+<!-- Transforme o texto para que as primeiras letras de cada palavra fiquem em maiúscula -->
+<div>
+    {{ 'texto capitalizado' | titlecase  }}
+</div>
+
+<!-- Ao clicar neste botão, deverá mostrar um alert com a data de hoje (variável dataAtual) no formato 21/12/2022. Use o pipe de data lá no ts -->
+<div>
+    <button class="btn btn-success" (click)="mostrarData()">Mostrar data</button>
+</div>
+
+<h1>Criação de um pipe modificador de string</h1>
+
+<div>
+    {{ 'este é um texto centopéia' | centopeia }} Deverá mostrar EsTe é uM TeXtO CeNtOpÉiA
+</div>
+
+<h1>Criação de um pipe modificador de number</h1>
+
+<div>
+     2^2 -> {{ 2 | exp }} -> Deverá mostrar 4
+</div>
+
+<div>
+     2^3 -> {{ 2 | exp:3 }} -> Deverá mostrar 8
+</div>
+
+<h1>Criação de um pipe para filtrar arrays</h1>
+<!--
+    Aqui deverá ser mostrado somente as tecnologias que deverão ser filtradas no campo filtro (ignorando se é maiúscula ou minúscula).
+    Exs.:
+        - Se eu digitar "j", deverá mostrar somente Java
+        - Se eu digitar "a", deverá mostrar "Angular" e "Java".
+        - Se eu digitar "z", não deverá mostrar nada.
+-->
+<div class="row">
+    <div class="col-6">
+        <label for="filtro">Filtro</label>
+        <input type="text" class="form-control" [(ngModel)]="texto" id="filtro">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <ul>
+            <li *ngFor="let item of tecnologias">{{ item | filtroArray: texto }}</li>
+        </ul>
+    </div>
+</div>
