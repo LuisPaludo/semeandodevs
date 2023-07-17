@@ -1,0 +1,30 @@
+- Crie um novo projeto Angular chamado exercicios-aula-dezesseis -> Foi
+- Crie um componente chamado "card". Este card deve receber 3 parâmetros: - > Foi
+  - título -> Foi
+  - conteudo -> Foi
+  - botao -> Foi
+  
+  - A estrutura do card deve seguir como aqui https://getbootstrap.com/docs/5.0/components/card/#using-grid-markup, 
+  onde temos o título, conteúdo e botão (que vai ser o texto que o botão irá receber). -> Foi
+  - O design também pode ser o mesmo. -> Foi
+  - O botão é opcional, então pode ser que o usuário passe ou não um botão. -> Foi
+  - Quando clicar no botão, deve disparar um evento (via output), dizendo que o botão foi clicado. -> Foi
+
+
+
+- Crie um segundo componente chamado de input, que deve receber 2 parâmetros:
+  - label
+  - type
+
+  - Crie um input que poderá ser um text, password, date, etc., conforme os tipos de inputs existentes, conforme 
+  exemplos https://www.w3schools.com/html/html_form_input_types.asp. Esse será o type, que será enviado por parâmetro. 
+  - O atributo label será utilizado para mostrar o texto acima do input. 
+  - Crie outputs padrão, como para quando usar o blur, focus, input e dispare eventos via output.
+
+
+
+
+- Crie um componente chamado "contador", que terá dois botões e uma label. A label vai iniciar em 0. Um botão será para 
+incrementar o valor e o outro para decrementar.  -> Foi
+
+- Responder o questionário em https://forms.gle/3WWiFZwaw9fniDSD8 -> Foi
