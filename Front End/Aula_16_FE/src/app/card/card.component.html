@@ -1,0 +1,50 @@
+<div class="container text-center h3 pb-5">
+    Exercício 1 - Cartão
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div *ngIf="cardToggle" class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{cardTitle}}</h5>
+                <p class="card-text">{{cardContent}}</p>
+                <button *ngIf="check.checked" class="btn btn-primary" (click) ='cardButtonClicked()' >{{cardButtonContent}}</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-8">
+        <label for="title" class="h5">Título</label>
+        <input #newTitle [disabled] = "cardToggle" type="text" name="title" class="form-control">
+        <label for="content" class="h5 pt-2"> Conteúdo</label>
+        <input #newContent [disabled] = "cardToggle" type="text" name="conteudo" class="form-control">
+        <div class="form-check my-3">
+            <input #check (change)="checkCheckBox($event)" [disabled] = "cardToggle" class="form-check-input" type="checkbox" id="flexCheckChecked" checked>
+            <label class="form-check-label" for="flexCheckChecked">
+              Botão?
+            </label>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label  for="content" class="h5 pt-2"> Conteúdo do Botão</label>
+                <input #newButtonContent [disabled] = "!check.checked" [disabled] = "cardToggle" type="text" name="conteudo" class="form-control">
+            </div>
+            <div class="col-md-6 px-5 d-flex justify-content-center">
+                <div *ngIf="hasError" class="container-fluid border border-5 border-danger bg-warning-subtle d-flex justify-content-center flex-column">
+                    <div class="container text-danger text-center h5">Erro</div>
+                    <div class="container text-danger text-center h6">{{errorTitle}}</div>
+                    <div class="container text-danger text-center h6">{{errorContent}}</div>
+                    <div class="container text-danger text-center h6">{{errorButtonContent}}</div>
+                </div>                
+            </div>
+            <div class="col-md-3 d-flex justify-content-center">
+                <button class="btn btn-success py-5" (click)="toggle(newTitle.value,newContent.value,newButtonContent.value)">
+                    {{buttonCreatCard}}
+                </button>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+

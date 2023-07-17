@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercício 16 - Desafios Angular</title>
+</head>
+<body class="">
+    <div class="container text-center display-6 pt-3">Desafios Angular</div>
+    <div class="container border border-4 rounded my-5 border-success p-5">
+      <app-card (clickedButton)="wasClicked($event)"></app-card>
+    </div>
+    <div *ngIf="clicked" class="container text-center h2">
+      Fui Clicado!
+    </div>
+    <div class="container border border-4 rounded my-5 border-primary p-5">
+      <app-input (focus)="wasFocused($event)" (focusMessage)="showFocusMessage($event)"></app-input>
+    </div>
+    <div *ngIf="showFocused" class="container text-center h2">
+      {{focusMessage}}
+    </div>
+    <div class="container border border-4 rounded my-5 border-danger p-5">
+      <app-counter></app-counter>
+    </div>    
+</body>
+</html>
