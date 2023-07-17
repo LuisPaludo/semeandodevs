@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de usuários</title>
+
+    <link rel="stylesheet" href="crud.css">
+    <script src="crud.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div id="cadastro">
+                <div class="header">
+                    <h1>Cadastro de clientes</h1>
+                </div>
+                <form id="formulario">
+                    <div class="formulario-container">
+                        <input type="hidden" name="id" id="id">
+                        <div class="row">
+                            <div class="col">
+                                <label for="nome">Nome</label>
+                                <input type="text" id="nome" name="nome">
+                                <span class="erro hidden" id="nome-erro">Este campo é obrigatório</span>
+                            </div>
+                            <div class="col">
+                                <label for="sobrenome">Sobrenome</label>
+                                <input type="text" id="sobrenome" name="sobrenome">
+                                <span class="erro hidden" id="sobrenome-erro">Este campo é obrigatório</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="email">E-mail</label>
+                                <input type="email" id="email" name="email">
+                                <span class="erro hidden" id="email-erro">Este campo é obrigatório</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col d-flex justify-content-center">
+                                <button type="submit" id="btn-salvar">Salvar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="usuarios">
+                <ul id="ul-usuarios"></ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
