@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Implementação do bootstrap -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script defer src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Meu Script para sobscrever algumas informações -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="url-shortening-api-master/images/favicon-32x32.png">
+    <title>Shortly</title>
+</head>
+
+<body>
+    <header>
+        <!-- Container para conter a navbar do bootstrap -->
+        <div class="container">
+            <!-- Indicação de navbar, expansivel em tamanhos maiores que 992px -->
+            <nav class="navbar navbar-expand-lg">
+                <!-- Criação de div com classe container fluid e com os items alinhados no inicio do container (flex) -->
+                <div class="container-fluid align-items-start">
+                    <!-- Anchor com tamanho de fonte 4, fonte em bold e padding 0 -->
+                    <a class="navbar-brand fs-4 fw-bold p-0" href="#">Shortly</a>
+                    <!-- Botão para dar toggle na navbar quando estiver em modo mobile -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Lista de itens da navbar, todos com margem automatica para a caixa flex, fonte em bold  -->
+                        <!-- tamanho de fonte 6 e alinhamento dos items ao centro -->
+                        <ul class="navbar-nav me-auto fw-bold fs-6 align-items-center" id="Nav">
+                            <!-- item da navbar com margem no eixo x de 3, para tamanhos médios de tela -->
+                            <li class="nav-item mx-md-3 ">
+                                <a class="nav-link" aria-current="page" id="Nav_1" href="#">Features</a>
+                            </li>
+                            <li class="nav-item mx-md-3">
+                                <a class="nav-link" id="Nav_2" href="#">Pricing</a>
+                            </li>
+                            <li class="nav-item mx-md-3">
+                                <a class="nav-link" id="Nav_3">Resources</a>
+                            </li>
+                        </ul>
+                        <!-- Divisor de tela (linha horizontal) -->
+                        <hr class="divider">
+                        <!-- Form em flex, com justificação do conteudo ao centro -->
+                        <form class="d-flex justify-content-center" id="Form">
+                            <!-- Botão com margem no eixo x de 3 para telas médias, texto em bold e cor de texto secundária -->
+                            <button class="btn mx-md-3 fw-bold text-secondary" id="Nav_4">Login</button>
+                        </form>
+                        <form role="search" class="d-flex justify-content-center">
+                            <!-- Botão em formato de pilula, com margem em y igual a 2, para telas maiores que a média de 0 -->
+                            <!-- fonte em bold, padding de 5 para telas menores que md -->
+                            <button class="btn botao rounded-pill my-2 my-md-0 fw-bold px-5 px-md-3"
+                                id="Nav_5">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container-fluid">
+            <div class="row justify-content-end w-100 mx-0" id="C_1">
+                <div class="col-md-1"></div>
+                <div class="col-md-6 d-flex justify-content-center flex-column align-items-center p-md-0 order-md-1 order-2"
+                    id="C_2">
+                    <div class="container display-4 fw-bold">More than just shorter links</div>
+                    <div class="container fs-6 text-secondary">Build your brand's recognition and get detailed insights
+                        on how your links are performing.</div>
+                    <button
+                        class=" fs-5 btn botao rounded-pill px-4 align-self-center align-self-md-start my-3">Get
+                        Started</button>
+                </div>
+                <div class="col-md-5 order-md-2 order-1 p-md-0 mb-5 mb-md-0" id="Img">
+                    <img src="url-shortening-api-master/images/illustration-working.svg" class="img-fluid" id="Img">
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid p-5 p-md-0 bg-secondary-subtle" id="C_4">
+            <div class="row justify-content-center w-100 mt-5 pb-2 mx-0">
+                <div class="col-md-1"></div>
+                <div class="col-md-10 p-5" id="C_3">
+                    <form class="d-md-flex  row needs-validation" role="text" novalidate>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-8">
+                            <input class="me-3 form-control" type="url" placeholder="Shorten a link here..."
+                                aria-label="Search" id="Input" required>
+                            <div class="invalid-feedback">
+                                Please add a link.
+                            </div>
+                        </div>
+                        <button class="btn botao col-md-2 py-2 mt-4 mt-md-0" type="button" id="enviar">Shorten It!</button>
+                        <div class="col-md-1"></div>
+                    </form>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        <div class="container-fluid" id="Second-bg">
+            <div class="row resultado d-none" id="R_1">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="container-fluid row bg-white align-items-center p-3 m-0 mt-md-1 mb-4 mb-md-0" >
+                        <div class="col-md-5 col-lg-5 fw-semibold" id="RL_1">Https://www.frontendmentor.io</div>
+                        <div class="col-md-2 col-lg-3">
+                            <hr class="divider d-md-none">
+                        </div>
+                        <div class="col-md-3 col-lg-3 mb-3 mb-md-0"><a href=""
+                                class="text-primary text-decoration-none" id="SL_1">Https://rel.ink/k4lKyK</a></div>
+                        <div class="col-md-2 col-lg-1"><button class="btn botao w-md-100 w-100" type="submit" id="Copy_1">Copy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row resultado d-none" id="R_2">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="container-fluid row bg-white align-items-center p-3 m-0 mt-md-3 mb-4 mb-md-0">
+                        <div class="col-md-5 col-lg-5 fw-semibold" id="RL_2">Https://twitter.com/frontendmentor</div>
+                        <div class="col-md-2 col-lg-3">
+                            <hr class="divider d-md-none">
+                        </div>
+                        <div class="col-md-3 col-lg-3 mb-3 mb-md-0"><a href=""
+                                class="text-primary text-decoration-none" id="SL_2">Https://rel.ink/gxOXp9</a></div>
+                        <div class="col-md-2 col-lg-1"><button class="btn botao w-md-100 w-100" type="submit" id="Copy_2">Copy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row resultado d-none" id="R_3">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="container-fluid row bg-white align-items-center p-3 m-0 mt-md-3 mb-4 mb-md-0">
+                        <div class="col-md-5 col-lg-5 fw-semibold" id="RL_3">Https://www.linkedin.com/company/frontend-mentor</div>
+                        <div class="col-md-2 col-lg-3">
+                            <hr class="divider d-md-none">
+                        </div>
+                        <div class="col-md-3 col-lg-3 mb-3 mb-md-0"><a href=""
+                                class="text-primary text-decoration-none" id="SL_3">Https://rel.ink/gob3X9</a></div>
+                        <div class="col-md-2 col-lg-1"><button class="btn botao w-md-100 w-100" type="submit" id="Copy_3">Copy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        <div class="container-fluid text-center py-5 " id="Third-bg">
+            <div class="container py-5">
+                <div class="container display-6 fw-bold">Advanced Statistics</div>
+                <div class="container mt-3 row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6 text-secondary">Track how your links are performing across the web with our
+                        advanced statistics dashboard.</div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid Fundo">
+            <div class="row g-5 w-100 m-0 p-0">
+                <div class="col-lg-1"></div>
+                <div class="col-lg Fundo-2">
+                    <div class="px-5">
+                        <div class="">
+                            <div class="Fundo-degrade px-4 pb-2 d-flex justify-content-center justify-content-lg-start">
+                                <div class="Imagem Fundo"><img
+                                        src="url-shortening-api-master/images/icon-brand-recognition.svg" class=""
+                                        width="40px" height="40px"></div>
+                            </div>
+                        </div>
+                        <div class="fw-bold bg-white p-4 fs-5">Brand Recognition</div>
+                        <div class="bg-white text-secondary pb-4 px-4">Boost your brand recognition with each click.
+                            Generic Links don't mean a thing.
+                            Branded links gelp instil confidence in your content.</div>
+                    </div>
+                </div>
+                <div class="col-lg Fundo-2 mt-lg-5 mt-0">
+                    <div class="p-5">
+                        <div class="">
+                            <div class="Fundo-degrade px-4 pb-2 d-flex justify-content-center justify-content-lg-start">
+                                <div class="Imagem Fundo"><img
+                                        src="url-shortening-api-master/images/icon-detailed-records.svg" class=""
+                                        width="40px" height="40px"></div>
+                            </div>
+                        </div>
+                        <div class="fw-bold bg-white p-4 fs-5">Detailed Records</div>
+                        <div class="bg-white text-secondary pb-4 px-4">Gain insights who is clicking your links. Knowing when and where people engage with your content helps inform better decisions.</div>
+                    </div>
+                </div>
+                <div class="col-lg Fundo-2 mt-lg-5 mt-0">
+                    <div class="p-md-5 px-5 mt-lg-5">
+                        <div class="">
+                            <div class="Fundo-degrade px-4 pb-2 d-flex justify-content-center justify-content-lg-start">
+                                <div class="Imagem Fundo"><img
+                                        src="url-shortening-api-master/images/icon-fully-customizable.svg" class=""
+                                        width="40px" height="40px"></div>
+                            </div>
+                        </div>
+                        <div class="fw-bold bg-white p-4 fs-5">Fully Customizable</div>
+                        <div class="bg-white text-secondary pb-4 px-4">Improve brand awareness and content discoverability through customizable links supercharging audience engagement.</div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        <div class="container-fluid text-center py-5 " id="Fourth-bg">
+            <div class="container py-5">
+                <div class="container display-4 fw-bold text-white">Boost your links today</div>
+                <div class="container mt-3 row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <button class="btn botao rounded-pill fs-4 px-5">Get Started</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid Last-bg">
+            <div class="row p-5 text-white">
+                <div class="col-md-1"></div>
+                <div class="col-md-1 fs-3 fw-bold master-1">Shortly</div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <div class="fw-bold mb-2 master-2">Features</div>
+                    <div class="text-secondary mb-1">Link Shortening</div>
+                    <div class="text-secondary mb-1">Branded Links</div>
+                    <div class="text-secondary mb-1">Analytics</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="fw-bold mb-2 master-2">Resources</div>
+                    <div class="text-secondary mb-1">Blog</div>
+                    <div class="text-secondary mb-1">Developers</div>
+                    <div class="text-secondary mb-1">Support</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="fw-bold mb-2 master-2">Company</div>
+                    <div class="text-secondary mb-1">About</div>
+                    <div class="text-secondary mb-1">Our Team</div>
+                    <div class="text-secondary mb-1">Careers</div>
+                    <div class="text-secondary mb-1">Contact</div>
+                </div>
+                <div class="col-md-2 Icon">
+                    <img src="url-shortening-api-master/images/icon-facebook.svg" class="px-2">
+                    <img src="url-shortening-api-master/images/icon-twitter.svg" class="px-2">
+                    <img src="url-shortening-api-master/images/icon-pinterest.svg" class="px-2">
+                    <img src="url-shortening-api-master/images/icon-instagram.svg" class="px-2">
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </main>
+</body>
+<script src="logics.js"></script>
+</html>

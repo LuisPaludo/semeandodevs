@@ -1,0 +1,158 @@
+#C_3 {
+    background-image: url(url-shortening-api-master/images/bg-boost-desktop.svg);
+    background-color: #3A3053;
+    border-radius: 10px;
+}
+
+#Input {
+    border-radius: 10px;
+}
+
+.col-md-5, .col-md-3 {
+    -moz-hyphens:auto;
+    -ms-hyphens:auto;
+    -webkit-hyphens:auto;
+    hyphens:auto;
+    word-wrap:break-word;
+}
+
+#C_4 {
+        background: linear-gradient(to bottom,   
+            white 0%,
+            white 50%,
+            #F0F1F6 50%,
+            #F0F1F6 100%);
+}
+
+.Fundo-degrade {
+    background: linear-gradient(to bottom,   
+        #F0F1F6 0%,
+        #F0F1F6 50%,
+        white 50%,
+        white 100%);
+}
+
+.Fundo-2 {
+    background: linear-gradient(to bottom,   
+    #F0F1F6 0%,
+    #F0F1F6 50%,
+    #2BD1D1 50%,
+    #2BD1D1 51%,
+    #F0F1F6 51%,
+    #F0F1F6 100%);
+}
+
+.botao {
+    background-color: #2BD1D1;
+    color: white;
+}
+
+.botao:hover {
+    background-color: #9BE3E2;
+}
+
+#R_1, #R_2, #R_3 {
+    border-radius: 10px;
+}
+
+#Second-bg, #Third-bg, .Fundo {
+    background-color: #F0F1F6;
+}
+
+.Icone {
+    background-color: #3A3053;
+}
+
+.Last-bg{
+    background-color: #232027;
+}
+
+#Fourth-bg {
+    background-image: url(url-shortening-api-master/images/bg-shorten-desktop.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #3A3053;
+}
+
+.Imagem {
+    width: 80px;
+    height: 80px;
+    padding: 15px;
+    background-color: #3A3053;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media  (max-width: 768px) {
+    #navbarSupportedContent{
+        color: white;
+        background-color: #3A3053;
+        border-radius: 15px;
+        padding: 15px;
+    }
+    
+    #Nav_1, #Nav_2, #Nav_3, #Nav_4 {
+        color: white !important;
+    }
+
+    #C_2{
+        text-align: center;
+    }
+    
+    #Img {
+        object-position: 50px 0px;
+    }
+
+    #C_3 {
+        background-image: url(url-shortening-api-master/images/bg-boost-mobile.svg);
+        background-repeat: no-repeat;
+        background-size:cover;
+    }
+
+    #Fourth-bg {
+        background-image: url(url-shortening-api-master/images/bg-shorten-mobile.svg);
+    }
+
+    .Last-bg {
+        text-align: center;
+    }
+
+    .master-1{
+        padding-bottom: 1em;;
+    }
+
+    .master-2{
+        padding-bottom: 1em;
+        padding-top: 1em;
+    }
+
+    .Icon {
+        padding-top: 3em;
+        padding-bottom: 3em;
+    }
+
+    .Fundo-2 {
+        background: linear-gradient(to right,   
+        #F0F1F6 0%,
+        #F0F1F6 50%,
+        #2BD1D1 50%,
+        #2BD1D1 51%,
+        #F0F1F6 51%,
+        #F0F1F6 100%);
+    }
+    
+}
+
+@media(max-width: 992px){
+    .Fundo-2 {
+        background: linear-gradient(to right,   
+        #F0F1F6 0%,
+        #F0F1F6 50%,
+        #2BD1D1 50%,
+        #2BD1D1 51%,
+        #F0F1F6 51%,
+        #F0F1F6 100%);
+    }
+}
