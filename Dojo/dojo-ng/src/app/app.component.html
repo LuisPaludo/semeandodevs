@@ -1,31 +1,55 @@
-<div class="container body d-flex justify-content-between flex-column vh-100 my-4">
-    <div class="row mt-3">
-        <div class="vida jogador1 col-5">
-            <div class="percentual"></div>
-        </div>
+<div class="container d-flex justify-content-between flex-column vh-100">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-5">
+            <div class="vida jogador1 p-0 m-0 overflow-hidden">
+                <div [ngStyle]="defineVidaPlayer()" id="vida-player" class="percentual-player"></div>
+            </div>
+            <div class="text-center fs-3 fw-bold">
+                {{heroi}}
+            </div>
+        </div>        
         <div class="nivel col-2">
-            5
+            {{faseAtual + 1}}
         </div>
-        <div class="vida jogador2 col-5">
-            <div class="percentual"></div>
-        </div>
+        <div class="col-5">
+            <div class="vida jogador2 p-0 m-0 overflow-hidden">
+                <div [ngStyle]="defineVidaInimigo()" class="percentual-inimigo"></div>
+            </div>
+            <div class="text-center fs-3 fw-bold">
+                {{inimigoAtual.nome}}
+            </div>
+        </div>        
     </div>
 
-    <div class="row">
-        <div class="col jogador d-flex justify-content-center">
-            <img src="https://mugenarchive.com/forums/576546d5bf292b9424d94fde84f7b5a3/images/Gohan_SSJ2_DBZ__5568_thumb.gif" alt="">
-        </div>
+    <div class="row h-75 m-3 body border d-flex justify-content-center border-5 border-secondary rounded overflow-hidden">
+        <div class="div h-50">
+            <div class="row">
+                <div class="col text-center fw-bold">
+                    vida: {{player.vida}}/{{player.vidaMaxima}}
+                    xp : {{player.xp}}
+                    AtaqueMax: {{player.ataqueMaximo}}
+                </div>
+                <div class="col text-center fw-bold">
+                    {{inimigoAtual.vida}}/{{inimigoAtual.vidaMaxima}}
 
-        <div class="col inimigo d-flex justify-content-center h-50">
-            <img src="https://mugenarchive.com/forums/576546d5bf292b9424d94fde84f7b5a3/images/Gogeta_SSJ_DBZ__60619_thumb.gif" alt="">
+                </div>
+            </div>
+        </div>
+        <div [ngClass]="{'justify-content-between': (!playerAtacando && !inimigoAtacando), 'justify-content-end': playerAtacando, 'justify-content-start': inimigoAtacando}" class="col h-50 jogador d-flex px-5 flex-end">
+            <img src={{urlPlayer}} alt="">
+            <img src={{urlInimigo}} alt="" class="inimigo">
         </div>
     </div>
     <div class="row">
-        <div class="col-6 d-flex justify-content-center">
-            <button class="btn btn-danger">ATACAR</button>
-        </div>
-        <div class="col-6 d-flex justify-content-center">
-            <button class="btn btn-success">CURAR</button>
-        </div>
+        <div class="col-6 border border-5 p-3 border-danger rounded-pill bg-warning">
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    <button [disabled]="playerAtacando||inimigoAtacando||playerCurando||inimigoCurando" class="btn btn-danger px-md-5 py-md-4" (click)="atacar()">ATACAR</button>
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    <button [disabled]="playerAtacando||inimigoAtacando||playerCurando||inimigoCurando" class="btn btn-success px-md-5 py-md-4" (click)="curar()">CURAR</button>
+                </div>
+            </div>
+        </div>        
     </div>
 </div>
