@@ -1,0 +1,34 @@
+.vida {
+    height: 20px;
+    border: 4px solid black;
+    position: relative;
+    border-radius: 200px;
+
+    .percentual {
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        background-color: red;
+    }
+}
+
+.nivel {
+    text-align: center;
+    font-size: 50px;
+}
+
+.jogador{
+    scale:3;
+}
+
+.inimigo{
+    scale:6;
+    transform:scalex(-1)
+}
+
+.body{
+    background-image: url('https://criticalhits.com.br/wp-content/uploads/2021/03/Torneio-de-Artes-Marciais-768x414.jpg.webp');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
