@@ -25,76 +25,121 @@ export class AppComponent {
   inimigos = [
     {
         fase: 1,
-        nome: 'Saibamen',
-        vida: 10,
+        nome: 'Kuririn',
+        vida: 1,
         vidaMaxima: 10,
         experiencia: 5,
         ataqueMaximo: 2,
-        urlNormal: 'https://mugenarchive.com/forums/576546d5bf292b9424d94fde84f7b5a3/images/SaibamenZ2_48780.gif',
+        tempoCura: 400,
+        tempoAtaque: 2200,
+        urlNormal: '/assets/kuririn/kuririn-normal.gif',
+        urlAtacando: '/assets/kuririn/kuririn-atacando.gif',
+        urlCurando: '/assets/kuririn/kuririn-curando.gif',
     },
     {
         fase: 2,
-        nome: 'Vegeta',
-        vida: 30,
+        nome: 'Goten',
+        vida: 1,
         vidaMaxima: 30,
         experiencia: 7,
-        ataqueMaximo: 5
+        ataqueMaximo: 5,
+        tempoCura: 1200,
+        tempoAtaque: 2800,
+        urlNormal: '/assets/goten/goten-normal.gif',
+        urlAtacando: '/assets/goten/goten-atacando.gif',
+        urlCurando: '/assets/goten/goten-curando.gif',
     },
     {
         fase: 3,
-        nome: 'Capitão Ginyu',
-        vida: 50,
+        nome: 'Gohan',
+        vida: 1,
         vidaMaxima: 50,
         experiencia: 10,
-        ataqueMaximo: 10
+        ataqueMaximo: 10,
+        tempoCura: 800,
+        tempoAtaque: 4400,
+        urlNormal: '/assets/gohan/gohan-normal.gif',
+        urlAtacando: '/assets/gohan/gohan-atacando.gif',
+        urlCurando: '/assets/gohan/gohan-curando.gif',
     },
     {
         fase: 4,
-        nome: 'Freeza',
-        vida: 90,
+        nome: 'Vegeta',
+        vida: 1,
         vidaMaxima: 90,
         experiencia: 20,
-        ataqueMaximo: 15
+        ataqueMaximo: 15,
+        tempoCura: 1000,
+        tempoAtaque: 6000,
+        urlNormal: '/assets/vegeta/vegeta-normal.gif',
+        urlAtacando: '/assets/vegeta/vegeta-atacando.gif',
+        urlCurando: '/assets/vegeta/vegeta-curando.gif',
     },
     {
         fase: 5,
-        nome: 'Androides 18',
-        vida: 130,
+        nome: 'Cell',
+        vida: 1,
         vidaMaxima: 130,
         experiencia: 40,
-        ataqueMaximo: 20
+        ataqueMaximo: 20,
+        tempoCura: 600,
+        tempoAtaque: 1400,
+        urlNormal: '/assets/cell/cell-normal.gif',
+        urlAtacando: '/assets/cell/cell-atacando2.gif',
+        urlCurando: '/assets/cell/cell-curando.gif',
+
     },
     {
         fase: 6,
-        nome: 'Cell',
-        vida: 170,
+        nome: 'Baby Vegeta',
+        vida: 1,
         vidaMaxima: 170,
         experiencia: 70,
-        ataqueMaximo: 25
+        ataqueMaximo: 25,
+        tempoCura: 400,
+        tempoAtaque: 5400,
+        urlNormal: '/assets/babyvg/babyvg-normal.gif',
+        urlAtacando: '/assets/babyvg/babyvg-atacando2.gif',
+        urlCurando: '/assets/babyvg/babyvg-curando.gif',
     },
     {
         fase: 7,
-        nome: 'Babidi',
-        vida: 220,
+        nome: 'Goku Black',
+        vida: 1,
         vidaMaxima: 220,
         experiencia: 100,
-        ataqueMaximo: 30
+        ataqueMaximo: 30,
+        tempoCura: 1600,
+        tempoAtaque: 2400,
+        urlNormal: '/assets/black/black-normal.gif',
+        urlAtacando: '/assets/black/black-atacando.gif',
+        urlCurando: '/assets/black/black-curando.gif',
     },
     {
         fase: 8,
-        nome: 'Majin Boo',
-        vida: 400,
+        nome: 'Xeno Goku',
+        vida: 1,
         vidaMaxima: 400,
         experiencia: 150,
-        ataqueMaximo: 60
+        ataqueMaximo: 60,
+        tempoCura: 1400,
+        tempoAtaque: 5000,
+        urlNormal: '/assets/xenogoku/xenogoku-normal.gif',
+        urlAtacando: '/assets/xenogoku/xenogoku-atacando.gif',
+        urlCurando: '/assets/xenogoku/xenogoku-curando.gif',
     },
     {
         fase: 9,
-        nome: 'Broly',
+        nome: 'Jiren',
         vida: 600,
         vidaMaxima: 600,
         experiencia: 200,
-        ataqueMaximo: 120
+        ataqueMaximo: 120,
+        tempoCura: 600,
+        tempoAtaque: 4200,
+        urlNormal: '/assets/jiren/jiren-normal.gif',
+        urlAtacando: '/assets/jiren/jiren-atacando.gif',
+        urlCurando: '/assets/jiren/jiren-curando.gif',
     },
     {
         fase: 10,
@@ -116,9 +161,10 @@ player = {
   ataqueMaximo: 3,
   xp: 0,
   proximoNivel: 5,
-  urlNormal: 'https://mugenarchive.com/forums/576546d5bf292b9424d94fde84f7b5a3/images/Songoku_US_33255.gif',
-  urlAtacando: 'https://mugenarchive.com/forums/576546d5bf292b9424d94fde84f7b5a3/images/Bardock_63602_thumb.gif',
-  urlCurando: 'https://thumbs.gfycat.com/RapidIllegalKronosaurus-max-1mb.gif',
+  urlNormal: '/assets/playerNormal.gif',
+  urlAtacando: '/assets/playerAtacando.gif',
+  urlCurando: '/assets/playerCurando.gif',
+  urlApanhando: '/assets/playerApanhando.png',
 }
 
 urlPlayer:string = this.player.urlNormal;
@@ -147,6 +193,9 @@ atacar = () => {
   this.playerAtacando = true;
   this.urlPlayer = this.player.urlAtacando;
   let ataqueHeroi = Math.ceil(Math.random() * this.player.ataqueMaximo);
+  if (ataqueHeroi < 0.6*this.player.ataqueMaximo){
+    ataqueHeroi = Math.ceil(0.6*this.player.ataqueMaximo);
+  }
   this.inimigoAtual.vida -= ataqueHeroi;
 
   setTimeout(() => {
@@ -157,9 +206,9 @@ atacar = () => {
   } else {
       this.calculaXp(this.inimigoAtual.experiencia);
       this.inimigoAtual = this.inimigos[++this.faseAtual];
-
+      this.urlInimigo = this.inimigoAtual.urlNormal;
   }
-}, 3000);
+}, 1500);
 
  
 };
@@ -201,16 +250,28 @@ acaoInimigo = () => {
 
 ataqueInimigo = () => {
   this.inimigoAtacando = true;
+  this.urlPlayer = this.player.urlApanhando;
+  this.urlInimigo = this.inimigoAtual.urlAtacando;
   let ataque = Math.ceil(Math.random() * this.inimigoAtual.ataqueMaximo);
   this.player.vida -= ataque;
+
   setTimeout(() => {
     this.inimigoAtacando = false;
-}, 3000);
+    this.urlPlayer = this.player.urlNormal;
+    this.urlInimigo = this.inimigoAtual.urlNormal;
+}, this.inimigoAtual.tempoAtaque);
 };
 
 curaInimigo = () => {
-  let cura = Math.floor(this.inimigoAtual.vidaMaxima * this.fatorCura);
-  this.inimigoAtual.vida = Math.min(this.inimigoAtual.vidaMaxima, this.inimigoAtual.vida + cura);
+  this.inimigoCurando = true;
+  this.urlInimigo = this.inimigoAtual.urlCurando;
+
+  setTimeout(() => {
+    this.inimigoCurando = false;
+    this.urlInimigo = this.inimigoAtual.urlNormal;
+    let cura = Math.floor(this.inimigoAtual.vidaMaxima * this.fatorCura);
+    this.inimigoAtual.vida = Math.min(this.inimigoAtual.vidaMaxima, this.inimigoAtual.vida + cura);
+  }, this.inimigoAtual.tempoCura);
 };
 
 curar = () => {
@@ -223,7 +284,7 @@ curar = () => {
   let cura = Math.floor(this.player.vidaMaxima * this.fatorCura);
   this.player.vida = Math.min(this.player.vidaMaxima, this.player.vida + cura);
   this.acaoInimigo();
-}, 3000);
+}, 1920);
   
 };
 
