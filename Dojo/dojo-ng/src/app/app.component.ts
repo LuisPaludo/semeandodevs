@@ -14,6 +14,7 @@ export class AppComponent {
   fatorCura = 0.2;
   fatorXP = 1.2;
   fatorEvolucao = 1.3;
+  fatorCritico = 3;
 
   playerAtacando = false;
   inimigoAtacando = false;
@@ -26,12 +27,12 @@ export class AppComponent {
     {
         fase: 1,
         nome: 'Kuririn',
-        vida: 1,
+        vida: 10,
         vidaMaxima: 10,
         experiencia: 5,
         ataqueMaximo: 2,
-        tempoCura: 400,
-        tempoAtaque: 2200,
+        tempoCura: 1500,
+        tempoAtaque: 2550,
         urlNormal: '/assets/kuririn/kuririn-normal.gif',
         urlAtacando: '/assets/kuririn/kuririn-atacando.gif',
         urlCurando: '/assets/kuririn/kuririn-curando.gif',
@@ -39,8 +40,8 @@ export class AppComponent {
     {
         fase: 2,
         nome: 'Goten',
-        vida: 1,
-        vidaMaxima: 30,
+        vida: 15,
+        vidaMaxima: 15,
         experiencia: 7,
         ataqueMaximo: 5,
         tempoCura: 1200,
@@ -52,9 +53,9 @@ export class AppComponent {
     {
         fase: 3,
         nome: 'Gohan',
-        vida: 1,
-        vidaMaxima: 50,
-        experiencia: 10,
+        vida: 20,
+        vidaMaxima: 20,
+        experiencia: 15,
         ataqueMaximo: 10,
         tempoCura: 800,
         tempoAtaque: 4400,
@@ -65,8 +66,8 @@ export class AppComponent {
     {
         fase: 4,
         nome: 'Vegeta',
-        vida: 1,
-        vidaMaxima: 90,
+        vida: 45,
+        vidaMaxima: 45,
         experiencia: 20,
         ataqueMaximo: 15,
         tempoCura: 1000,
@@ -78,11 +79,11 @@ export class AppComponent {
     {
         fase: 5,
         nome: 'Cell',
-        vida: 1,
-        vidaMaxima: 130,
+        vida: 90,
+        vidaMaxima: 90,
         experiencia: 40,
         ataqueMaximo: 20,
-        tempoCura: 600,
+        tempoCura: 1500,
         tempoAtaque: 1400,
         urlNormal: '/assets/cell/cell-normal.gif',
         urlAtacando: '/assets/cell/cell-atacando2.gif',
@@ -92,12 +93,12 @@ export class AppComponent {
     {
         fase: 6,
         nome: 'Baby Vegeta',
-        vida: 1,
-        vidaMaxima: 170,
+        vida: 120,
+        vidaMaxima: 120,
         experiencia: 70,
         ataqueMaximo: 25,
         tempoCura: 400,
-        tempoAtaque: 5400,
+        tempoAtaque: 4050,
         urlNormal: '/assets/babyvg/babyvg-normal.gif',
         urlAtacando: '/assets/babyvg/babyvg-atacando2.gif',
         urlCurando: '/assets/babyvg/babyvg-curando.gif',
@@ -105,8 +106,8 @@ export class AppComponent {
     {
         fase: 7,
         nome: 'Goku Black',
-        vida: 1,
-        vidaMaxima: 220,
+        vida: 150,
+        vidaMaxima: 150,
         experiencia: 100,
         ataqueMaximo: 30,
         tempoCura: 1600,
@@ -118,8 +119,8 @@ export class AppComponent {
     {
         fase: 8,
         nome: 'Xeno Goku',
-        vida: 1,
-        vidaMaxima: 400,
+        vida: 200,
+        vidaMaxima: 200,
         experiencia: 150,
         ataqueMaximo: 60,
         tempoCura: 1400,
@@ -131,8 +132,8 @@ export class AppComponent {
     {
         fase: 9,
         nome: 'Jiren',
-        vida: 600,
-        vidaMaxima: 600,
+        vida: 250,
+        vidaMaxima: 250,
         experiencia: 200,
         ataqueMaximo: 120,
         tempoCura: 600,
@@ -147,7 +148,12 @@ export class AppComponent {
         vida: 1000,
         vidaMaxima: 1000,
         experiencia: 250,
-        ataqueMaximo: 200
+        ataqueMaximo: 200,
+        tempoCura: 600,
+        tempoAtaque: 4200,
+        urlNormal: '/assets/jiren/jiren-normal.gif',
+        urlAtacando: '/assets/jiren/jiren-atacando.gif',
+        urlCurando: '/assets/jiren/jiren-curando.gif',
     }
 ];
 
@@ -161,10 +167,12 @@ player = {
   ataqueMaximo: 3,
   xp: 0,
   proximoNivel: 5,
+  chanceCritico: 0.3,
   urlNormal: '/assets/playerNormal.gif',
   urlAtacando: '/assets/playerAtacando.gif',
   urlCurando: '/assets/playerCurando.gif',
   urlApanhando: '/assets/playerApanhando.png',
+  urlCritico: '/assets/playerCritico.gif',
 }
 
 urlPlayer:string = this.player.urlNormal;
@@ -190,27 +198,50 @@ defineVidaInimigo() {
 }
 
 atacar = () => {
-  this.playerAtacando = true;
-  this.urlPlayer = this.player.urlAtacando;
-  let ataqueHeroi = Math.ceil(Math.random() * this.player.ataqueMaximo);
-  if (ataqueHeroi < 0.6*this.player.ataqueMaximo){
-    ataqueHeroi = Math.ceil(0.6*this.player.ataqueMaximo);
+  if(Math.random() < this.player.chanceCritico){
+    this.playerAtacando = true;
+    this.urlPlayer = this.player.urlCritico;
+    let ataqueHeroi = Math.ceil(Math.random() * this.player.ataqueMaximo);
+    if (ataqueHeroi < 0.6*this.player.ataqueMaximo){
+      ataqueHeroi = Math.ceil(0.6*this.player.ataqueMaximo);
+    }
+    setTimeout(() => {
+      this.inimigoAtual.vida -= this.fatorCritico*ataqueHeroi;
+      this.playerAtacando = false;
+      this.urlPlayer = this.player.urlNormal;
+      if (this.inimigoAtual.vida > 0) {
+        this.acaoInimigo();
+      } 
+      else {
+        this.calculaXp(this.inimigoAtual.experiencia);
+        this.inimigoAtual = this.inimigos[++this.faseAtual];
+        this.urlInimigo = this.inimigoAtual.urlNormal;
+      }
+    }, 6500);
+    return
   }
-  this.inimigoAtual.vida -= ataqueHeroi;
+  else{
+    this.playerAtacando = true;
+    this.urlPlayer = this.player.urlAtacando;
+    let ataqueHeroi = Math.ceil(Math.random() * this.player.ataqueMaximo);
+    if (ataqueHeroi < 0.6*this.player.ataqueMaximo){
+      ataqueHeroi = Math.ceil(0.6*this.player.ataqueMaximo);
+    }
 
-  setTimeout(() => {
-    this.playerAtacando = false;
-    this.urlPlayer = this.player.urlNormal;
-    if (this.inimigoAtual.vida > 0) {
-      this.acaoInimigo();
-  } else {
-      this.calculaXp(this.inimigoAtual.experiencia);
-      this.inimigoAtual = this.inimigos[++this.faseAtual];
-      this.urlInimigo = this.inimigoAtual.urlNormal;
-  }
-}, 1500);
-
- 
+    setTimeout(() => {
+      this.inimigoAtual.vida -= ataqueHeroi;
+      this.playerAtacando = false;
+      this.urlPlayer = this.player.urlNormal;
+      if (this.inimigoAtual.vida > 0) {
+        this.acaoInimigo();
+    } else {
+        this.calculaXp(this.inimigoAtual.experiencia);
+        this.inimigoAtual = this.inimigos[++this.faseAtual];
+        this.urlInimigo = this.inimigoAtual.urlNormal;
+    }
+  }, 1500);
+  return
+} 
 };
 
 calculaXp = (totalXp:number) => {
