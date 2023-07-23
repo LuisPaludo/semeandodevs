@@ -15,8 +15,6 @@ export class AppComponent implements OnInit{
   objetosInimigos: any;
   objetoFatores: any;
 
-  fimdejogo:boolean = false;
-
   //fatores
   heroi : any;
   faseAtual :any;
@@ -151,14 +149,8 @@ atacar = () => {
         this.acaoInimigo();
     } else {
         this.calculaXp(this.inimigoAtual.experiencia);
-        if(this.inimigos[++this.faseAtual]){
-          this.inimigoAtual = this.inimigos[++this.faseAtual];
-          this.urlInimigo = this.inimigoAtual.urlNormal;
-        }
-        else{
-          this.fimdejogo = true;
-        }
-        
+        this.inimigoAtual = this.inimigos[++this.faseAtual];
+        this.urlInimigo = this.inimigoAtual.urlNormal;
     }
   }, 1500);
   return

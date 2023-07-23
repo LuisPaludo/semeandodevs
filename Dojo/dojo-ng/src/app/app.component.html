@@ -22,7 +22,7 @@
             </div>        
         </div>
 
-        <div class="row h-75 m-3 body border d-flex justify-content-center border-5 border-secondary rounded overflow-hidden">
+        <div *ngIf="!fimdejogo" class="row h-75 m-3 body border d-flex justify-content-center border-5 border-secondary rounded overflow-hidden">
             <div class="div h-50">
                 <div class="row">
                     <div class="col fw-bold d-flex justify-content-start">
@@ -40,8 +40,14 @@
                 <img src={{urlInimigo}} alt="" class="inimigo">
             </div>
         </div>
+        <div *ngIf="fimdejogo" class="container">
+            <p class="text-center display-6">
+                FIM DE JOGO
+            </p>
+        </div>
+
         <div class="row">
-            <div class="col-6 border border-5 p-3 border-danger rounded-pill bg-warning">
+            <div class="col-6 border border-5 p-3 border-danger rounded-pill bg-primary-subtle">
                 <div class="row">
                     <div class="col-6 d-flex justify-content-center">
                         <button [disabled]="playerAtacando||inimigoAtacando||playerCurando||inimigoCurando" class="btn btn-danger px-md-5 py-md-4" (click)="atacar()">ATACAR</button>
