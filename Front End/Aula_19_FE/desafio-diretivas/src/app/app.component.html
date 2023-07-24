@@ -5,6 +5,14 @@
 <div *ehPar="3">Esta div não deve ser exibida</div>
 
 <h1>Diretiva tooltip</h1>
+<h2>Tooltip Funcionando em um span</h2>
 <p>Este é um texto qualquer mas o tooltip
-    <span tooltip texto="Texto de exemplo qualquer">deve ser exibido aqui</span>
+    <span tooltip texto="Texto de exemplo qualquer" corTexto="red" corBackground="green">deve ser exibido aqui</span>
 </p>
+
+<h2>Tooltip Funcionando em uma DIV</h2>
+<div tooltip texto="Texto de exemplo qualquer">deve ser exibido aqui</div>
+
+<div  data-bs-toggle="tooltip" data-bs-placement="top" title="Olá"> um teste</div>
+
+<a tooltip texto = 'um teste'class="btn btn-primary">oá</a>
