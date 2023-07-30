@@ -1,0 +1,11 @@
+- Criar um formulário de cadastro. Este formulário deve conter os seguintes campos e validadores:
+
+  - Campo CEP que ao preencher, deve buscar os dados da api 
+    - Ao buscar os dados, preenchê-los em outros 3 campos:
+      - Endereço - Campo obrigatório
+      - Cidade - Campo obrigatório
+      - Estado - Campo obrigatório
+
+  - Todos os campos ao clicar no botão salvar e se forem inválidos, devem mostrar o erro apropriado embaixo do campo.
+- Ao salvar um formulário válido, deve redirecionar o usuário para uma nova rota chamada /cadastro-sucesso 
+com uma mensagem qualquer (tente fazer algo bonito kkk)

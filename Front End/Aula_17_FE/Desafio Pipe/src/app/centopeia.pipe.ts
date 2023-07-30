@@ -19,6 +19,18 @@ export class CentopeiaPipe implements PipeTransform {
       aux == 0 ? aux = 1 : aux = 0
     }
 
+    // if(!value) {
+    //   return '';
+    // }
+
+    // let textoRetorno = ''
+    // let count = 0;
+
+    // value.split("").forEach(letra => {
+
+    // }
+    // )
+
     return new_word;
   }
 
