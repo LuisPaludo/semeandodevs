@@ -6,11 +6,13 @@ import { AppComponent } from './app.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AgradecimentoComponent } from './agradecimento/agradecimento.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CadastroComponent
+    CadastroComponent,
+    AgradecimentoComponent
   ],
   imports: [
     BrowserModule,

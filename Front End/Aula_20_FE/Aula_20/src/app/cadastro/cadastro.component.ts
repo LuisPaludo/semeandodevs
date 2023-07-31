@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {
-    FormControl,
     FormGroup,
     FormBuilder,
     Validators,
 } from '@angular/forms';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { CpfValidator } from '../utils/cpf_validator';
 import { SelectValidator } from '../utils/select_validator';
 import { NumberValidator } from '../utils/number_validator';
 import { CepValidator } from '../utils/cep_validator';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-cadastro',
@@ -20,7 +20,7 @@ import { CepValidator } from '../utils/cep_validator';
 export class CadastroComponent implements OnInit {
     form!: FormGroup;
 
-    constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
+    constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
 
     ngOnInit(): void {
         this.form = this.formBuilder.group({
@@ -117,5 +117,11 @@ export class CadastroComponent implements OnInit {
             this.form.markAllAsTouched();
             return;
         }
+    }
+
+    onSubmit() {
+        if(this.form?.valid){
+            this.router.navigateByUrl('/obrigado');
+        }   
     }
 }

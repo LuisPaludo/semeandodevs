@@ -1,7 +1,8 @@
 <form
   [formGroup]="form"
+  (ngSubmit)="onSubmit()"
   action=""
-  class="container mt-1 border border-5 border-primary px-5 bg-primary-subtle"
+  class="container mt-1 px-5 bg-primary-subtle"  
 >
   <div class="row">
     <div class="col h2 pt-1 pb-2 text-center">
@@ -10,7 +11,7 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <label for="nome" class="form-label">Nome</label>
+      <label for="nome" class="form-label">Nome Completo</label>
       <input
         id="nome"
         name="nome"
@@ -293,9 +294,9 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-10">
-      <label for="rua" class="form-label">Logradouro</label>
+  <div class="row mb-3">
+    <div class="col-md-8">
+      <label for="rua" class="form-label">Rua</label>
       <input
         type="text"
         name="rua"
@@ -348,6 +349,13 @@
         Digite um Estado.
       </div>
     </div>
-  </div>
-  <button class="btn btn-success my-3" (click)="salvar()">Enviar</button>
+    <div class="col-md-2 d-flex justify-content-center" [ngClass]="{
+      'align-items-end': !this.form.get('rua')?.touched || !this.form.get('uf')?.touched,
+      'align-items-center': (this.form.get('rua')?.invalid &&
+            (this.form.get('rua')?.touched || this.form.get('rua')?.dirty)) || (this.form.get('uf')?.invalid &&
+            (this.form.get('uf')?.touched || this.form.get('uf')?.dirty)),
+    }">
+      <button class="btn btn-success w-md-50 w-100 h-md-50 mt-2 mt-md-0" (click)="salvar()">Enviar</button>
+    </div>
+  </div>  
 </form>
