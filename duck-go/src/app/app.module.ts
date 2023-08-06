@@ -7,6 +7,9 @@ import { HomeComponent } from './home/home.component';
 import { HowtoplayComponent } from './howtoplay/howtoplay.component';
 import { RegisterComponent } from './user/register/register.component';
 import { LoginComponent } from './user/login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { ProfileComponent } from './user/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -14,13 +17,16 @@ import { LoginComponent } from './user/login/login.component';
     HomeComponent,
     HowtoplayComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

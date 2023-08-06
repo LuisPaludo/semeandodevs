@@ -1,4 +1,6 @@
-def _retorna_digitos(texto):
+from typing import Any
+
+def _retorna_digitos(texto)-> Any:
     if not texto or not isinstance(texto, str):
         return None
     return ''.join([c for c in texto if c.isdigit()])
@@ -29,7 +31,7 @@ def valida_cpf(cpf):
     return True
 
 
-def mascara_cpf(cpf):
+def mascara_cpf(cpf:str) -> Any:
     if valida_cpf(cpf):
         cpf = _retorna_digitos(cpf)
         return f'{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:11]}'

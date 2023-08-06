@@ -1,1 +1,78 @@
-<p>login works!</p>
+<div class="container p-4">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 col">
+      <div class="card">
+        <h5 class="card-header">Login</h5>
+        <div class="card-body">
+          <form
+            action=""
+            [formGroup]="login"
+            (ngSubmit)="onSubmit()"
+            action=""
+            class=""
+          >
+            <label for="email" class="form-label">E-mail</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  this.login.get('email')?.invalid &&
+                  (this.login.get('email')?.touched ||
+                    this.login.get('email')?.dirty),
+                'is-valid':
+                  this.login.get('email')?.valid &&
+                  (this.login.get('email')?.touched ||
+                    this.login.get('email')?.dirty)
+              }"
+              formControlName="email"
+            />
+            <div
+              *ngIf="
+                this.login.get('email')?.invalid &&
+                (this.login.get('email')?.touched ||
+                  this.login.get('email')?.dirty)
+              "
+              class="invalid-feedback"
+            >
+              E-mail não cadastrado.
+            </div>
+
+            <label for="senha" class="form-label">Senha</label>
+            <input
+              id="senha"
+              type="password"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  this.login.get('senha')?.invalid &&
+                  (this.login.get('senha')?.touched ||
+                    this.login.get('senha')?.dirty),
+                'is-valid':
+                  this.login.get('senha')?.valid &&
+                  (this.login.get('senha')?.touched ||
+                    this.login.get('senha')?.dirty)
+              }"
+              formControlName="senha"
+            />
+            <div
+              *ngIf="
+                this.login.get('senha')?.invalid &&
+                !this.login.get('senha')?.errors?.maxlength &&
+                !this.login.get('senha')?.errors?.minlength
+              "
+              class="invalid-feedback"
+            >
+              Senha inválida.
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Entrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
