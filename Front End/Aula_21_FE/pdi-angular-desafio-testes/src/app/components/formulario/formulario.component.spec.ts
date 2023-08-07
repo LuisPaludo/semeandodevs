@@ -31,6 +31,7 @@ import { By } from '@angular/platform-browser';
 import { FormularioService } from 'src/app/services/formulario.service';
 import { of } from 'rxjs';
 import { DebugElement } from '@angular/core';
+import {waitForAsync} from '@angular/core/testing';
 
 // Aqui começa a descrição do conjunto de testes. describe é usado para agrupar todos os testes relacionados ao
 // componente FormularioComponent.
@@ -277,7 +278,7 @@ describe('FormularioComponent', () => {
         return
     });
 
-    it('As mensagens só devem ficar visíveis por 3 segundos na tela.', async () => {
+    it('As mensagens só devem ficar visíveis por 3 segundos na tela.', waitForAsync(() => {
         const btn = fixture.debugElement.query(By.css('.btn-success'));
         const fnc = spyOn(component, 'salvoComSucesso');
 
@@ -297,7 +298,7 @@ describe('FormularioComponent', () => {
             expect(component.mensagemErroPar).toBeFalse();
             expect(component.mensagemSalvoComSucesso).toBeFalse();
         })
-    });
+    }));
 
     it('Quando a soma dos dois campos for par, o método verificaNumeroPar deve retornar true;', () => {
         const btn = fixture.debugElement.query(By.css('.btn-success'));
