@@ -22,16 +22,15 @@
 // -- Faltaram -> Se houver erro ao salvar, deve mostrar a mensagem de erro ao salvar.
 //             -> Se houve erro ao salvar, deve chamar o método erroAoSalvar.
 
-
 import { TestBed } from '@angular/core/testing';
 import { FormularioComponent } from './formulario.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ComponentFixture, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { FormularioService } from 'src/app/services/formulario.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { DebugElement } from '@angular/core';
-import {waitForAsync} from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 // Aqui começa a descrição do conjunto de testes. describe é usado para agrupar todos os testes relacionados ao
 // componente FormularioComponent.
@@ -175,7 +174,6 @@ describe('FormularioComponent', () => {
         (btn.nativeElement as HTMLButtonElement).click();
 
         expect(component.mensagemSalvoComSucesso).toBe(true);
-
     });
 
     it('Se a soma dos números não for par e for clicado em salvar, deve mostrar a mensagem de erro de número par.', () => {
@@ -197,7 +195,33 @@ describe('FormularioComponent', () => {
     });
 
     it('Se houver erro ao salvar, deve mostrar a mensagem de erro ao salvar.', () => {
-        return;
+        formularioSpy.and.returnValue(
+            throwError(() => new Error('Simulated error'))
+        );
+
+        // Funciona
+        component.form.controls['valor1'].setValue(1);
+        component.form.controls['valor2'].setValue(101);
+
+        component.salvar();
+        fixture.detectChanges();
+
+        // Não Funciona
+        // const btn = fixture.debugElement.query(By.css('.btn-success'));
+
+        // // Formulário Válido -> Soma dos items é impar
+        // component.form.setValue({
+        //     valor1: 2,
+        //     valor2: 101,
+        // });
+
+        // fixture.detectChanges();
+
+        // (btn.nativeElement as HTMLButtonElement).click();
+
+        // fixture.detectChanges();
+
+        expect(component.mensagemErroAoSalvar).toBeTruthy();
     });
 
     it('Se o formulário for inválido, não deve chamar o método de salvar do formularioService.', () => {
@@ -275,7 +299,22 @@ describe('FormularioComponent', () => {
     });
 
     it('Se houve erro ao salvar, deve chamar o método erroAoSalvar.', () => {
-        return
+        const fnc = spyOn(component, 'erroAoSalvar');
+
+        formularioSpy.and.returnValue(
+            throwError(() => new Error('Simulated error'))
+        );
+
+        component.form.controls['valor1'].setValue(1);
+        component.form.controls['valor2'].setValue(101);
+
+        component.salvar();
+        fixture.detectChanges();
+
+        expect(fnc).toHaveBeenCalled();
+
+        // Porque dá erro aqui?
+        // expect(component.mensagemErroAoSalvar).toBeTruthy();
     });
 
     it('As mensagens só devem ficar visíveis por 3 segundos na tela.', waitForAsync(() => {
@@ -297,14 +336,12 @@ describe('FormularioComponent', () => {
             expect(component.mensagemErroAoSalvar).toBeFalse();
             expect(component.mensagemErroPar).toBeFalse();
             expect(component.mensagemSalvoComSucesso).toBeFalse();
-        })
+        });
     }));
 
     it('Quando a soma dos dois campos for par, o método verificaNumeroPar deve retornar true;', () => {
         const btn = fixture.debugElement.query(By.css('.btn-success'));
-        const fnc = spyOn(component, 'verificaNumeroPar').and.returnValue(
-            true
-        );
+        const fnc = spyOn(component, 'verificaNumeroPar').and.returnValue(true);
 
         // Formulário Válido -> Soma dos items é par
         component.form.setValue({
@@ -321,22 +358,24 @@ describe('FormularioComponent', () => {
         expect(fnc).toHaveBeenCalled();
     });
 
-    it('Quando a soma dos dois campos for ímpar, o método verificaNumeroPar deve retornar false.',  () => {
-       const btn = fixture.debugElement.query(By.css('.btn-success'));
-       const fnc = spyOn(component, 'verificaNumeroPar').and.returnValue(false);
+    it('Quando a soma dos dois campos for ímpar, o método verificaNumeroPar deve retornar false.', () => {
+        const btn = fixture.debugElement.query(By.css('.btn-success'));
+        const fnc = spyOn(component, 'verificaNumeroPar').and.returnValue(
+            false
+        );
 
-       // Formulário Válido -> Soma dos items é impar
-       component.form.setValue({
-           valor1: 2,
-           valor2: 101,
-       });
+        // Formulário Válido -> Soma dos items é impar
+        component.form.setValue({
+            valor1: 2,
+            valor2: 101,
+        });
 
-       fixture.detectChanges();
+        fixture.detectChanges();
 
-       (btn.nativeElement as HTMLButtonElement).click();
+        (btn.nativeElement as HTMLButtonElement).click();
 
-       fixture.detectChanges();
+        fixture.detectChanges();
 
-       expect(fnc).toHaveBeenCalled();
+        expect(fnc).toHaveBeenCalled();
     });
 });
