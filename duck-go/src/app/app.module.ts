@@ -10,6 +10,8 @@ import { LoginComponent } from './user/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './user/profile/profile.component';
+import { DataComponent } from './user/profile/data/data.component';
+import { HistoryComponent } from './user/profile/history/history.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { ProfileComponent } from './user/profile/profile.component';
     RegisterComponent,
     LoginComponent,
     ProfileComponent,
+    DataComponent,
+    HistoryComponent,
   ],
   imports: [
     BrowserModule,
