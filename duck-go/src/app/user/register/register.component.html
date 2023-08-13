@@ -1,19 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+  <symbol id="check-circle-fill" viewBox="0 0 16 16">
+    <path
+      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
+    />
+  </symbol>
+</svg>
+
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
   action=""
-  class="container mt-1 px-5 bg-primary-subtle px-5 py-3"
+  class="container mt-1 px-5 px-5 py-3"
 >
-
   <div class="row">
-    <div class="col h2 text-center">Cadastro de Usuário</div>
+    <div class="col h2 text-center pb-5">Cadastro de Usuário</div>
   </div>
 
   <div class="row">
-
-
-    <div class="col-md-6">
-      <label for="nome" class="form-label">Nome Completo</label>
+    <div class="col-md-4">
+      <label for="username" class="form-label">Nome de Usuário</label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            this.form.get('username')?.invalid &&
+            (this.form.get('username')?.touched || this.form.get('username')?.dirty),
+          'is-valid':
+            this.form.get('username')?.valid &&
+            (this.form.get('username')?.touched || this.form.get('username')?.dirty)
+        }"
+        formControlName="username"
+      />
+      <div
+        *ngIf="
+          this.form.get('username')?.invalid &&
+          (this.form.get('username')?.touched || this.form.get('username')?.dirty)
+        "
+        class="invalid-feedback"
+      >
+        O nome de usuário deve conter apenas letras e números.
+      </div>
+    </div>
+    <div class="col-md-4">
+      <label for="nome" class="form-label">Nome</label>
       <input
         id="nome"
         name="nome"
@@ -36,12 +68,105 @@
         "
         class="invalid-feedback"
       >
-        Por favor, digite um nome válido.
+        O campo de nome não pode estar vazio.
+      </div>
+    </div>
+    <div class="col-md-4">
+      <label for="sobrenome" class="form-label">Sobrenome</label>
+      <input
+        id="sobrenome"
+        name="sobrenome"
+        type="text"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            this.form.get('sobrenome')?.invalid &&
+            (this.form.get('sobrenome')?.touched || this.form.get('sobrenome')?.dirty),
+          'is-valid':
+            this.form.get('sobrenome')?.valid &&
+            (this.form.get('sobrenome')?.touched || this.form.get('sobrenome')?.dirty)
+        }"
+        formControlName="sobrenome"
+      />
+      <div
+        *ngIf="
+          this.form.get('sobrenome')?.invalid &&
+          (this.form.get('sobrenome')?.touched || this.form.get('sobrenome')?.dirty)
+        "
+        class="invalid-feedback"
+      >
+        O campo de sobrenome não pode estar vazio.
       </div>
     </div>
 
+  </div>
 
-    <div class="col-md-6">
+  <div class="row">
+    <div class="col-md-3">
+      <label for="senha" class="form-label">Senha</label>
+      <input
+        id="senha"
+        type="password"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            this.form.get('senha')?.invalid &&
+            (this.form.get('senha')?.touched || this.form.get('senha')?.dirty),
+          'is-valid':
+            this.form.get('senha')?.valid &&
+            (this.form.get('senha')?.touched || this.form.get('senha')?.dirty)
+        }"
+        formControlName="senha"
+      />
+      <div
+        *ngIf="
+          this.form.get('senha')?.invalid &&
+          !this.form.get('senha')?.errors?.maxlength &&
+          !this.form.get('senha')?.errors?.minlength
+        "
+        class="invalid-feedback"
+      >
+        A senha deve conter:
+        <ul>
+          <li>A senha deve conter letras e números</li>
+          <li>Pelo menos um Caractere Especial (@,!. etc)</li>
+          <li>No mínimo 8 dígitos</li>
+          <li>No máximo 20 dígitos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <label for="confSenha" class="form-label">Confirmação de Senha</label>
+      <input
+        id="confSenha"
+        type="password"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            this.form.get('confSenha')?.invalid &&
+            (this.form.get('confSenha')?.touched ||
+              this.form.get('confSenha')?.dirty),
+          'is-valid':
+            this.form.get('confSenha')?.valid &&
+            (this.form.get('confSenha')?.touched ||
+              this.form.get('confSenha')?.dirty)
+        }"
+        formControlName="confSenha"
+      />
+      <div
+        *ngIf="
+          this.form.get('confSenha')?.invalid &&
+          !this.form.get('confSenha')?.errors?.maxlength &&
+          !this.form.get('confSenha')?.errors?.minlength
+        "
+        class="invalid-feedback"
+      >
+        As senhas digitadas não coincidem.
+      </div>
+    </div>
+
+    <div class="col-md-3">
       <label for="email" class="form-label">E-mail</label>
       <input
         id="email"
@@ -69,90 +194,7 @@
       </div>
     </div>
 
-
-  </div>
-
-
-  <div class="row">
-
-
     <div class="col-md-3">
-      <label for="senha" class="form-label">Senha</label>
-      <input
-        id="senha"
-        type="password"
-        class="form-control"
-        [ngClass]="{
-          'is-invalid':
-            this.form.get('senha')?.invalid &&
-            (this.form.get('senha')?.touched || this.form.get('senha')?.dirty),
-          'is-valid':
-            this.form.get('senha')?.valid &&
-            (this.form.get('senha')?.touched || this.form.get('senha')?.dirty)
-        }"
-        formControlName="senha"
-      />
-      <div
-        *ngIf="
-          this.form.get('senha')?.errors?.minlength &&
-          (this.form.get('senha')?.touched || this.form.get('senha')?.dirty)
-        "
-        class="invalid-feedback"
-      >
-        Por favor, digite uma senha com no mínimo 4 caracteres.
-      </div>
-      <div
-        *ngIf="
-          this.form.get('senha')?.errors?.maxlength &&
-          (this.form.get('senha')?.touched || this.form.get('senha')?.dirty)
-        "
-        class="invalid-feedback"
-      >
-        Por favor, digite uma com no máximo 20 caracteres.
-      </div>
-      <div
-        *ngIf="
-          this.form.get('senha')?.invalid &&
-          !this.form.get('senha')?.errors?.maxlength &&
-          !this.form.get('senha')?.errors?.minlength
-        "
-        class="invalid-feedback"
-      >
-        Por favor, digite uma senha.
-      </div>
-    </div>
-
-
-    <div class="col-md-3">
-      <label for="confSenha" class="form-label">Confirmação de Senha</label>
-      <input
-        id="confSenha"
-        type="password"
-        class="form-control"
-        [ngClass]="{
-          'is-invalid':
-            this.form.get('confSenha')?.invalid &&
-            (this.form.get('confSenha')?.touched || this.form.get('confSenha')?.dirty),
-          'is-valid':
-            this.form.get('confSenha')?.valid &&
-            (this.form.get('confSenha')?.touched || this.form.get('confSenha')?.dirty)
-        }"
-        formControlName="confSenha"
-      />
-      <div
-        *ngIf="
-          this.form.get('confSenha')?.invalid &&
-          !this.form.get('confSenha')?.errors?.maxlength &&
-          !this.form.get('confSenha')?.errors?.minlength
-        "
-        class="invalid-feedback"
-      >
-        As senhas digitadas não coincidem.
-      </div>
-    </div>
-
-
-    <div class="col-md-6">
       <label for="cpf" class="form-label">CPF</label>
       <input
         id="cpf"
@@ -179,14 +221,9 @@
         Por favor, digite um CPF válido.
       </div>
     </div>
-
-
   </div>
 
-
   <div class="row">
-
-
     <div class="col-md-2">
       <label for="cep" class="form-label">CEP</label>
       <input
@@ -214,7 +251,6 @@
         Digite um CEP válido.
       </div>
     </div>
-
 
     <div class="col-md-4">
       <label for="cidade" class="form-label">Cidade</label>
@@ -245,7 +281,6 @@
       </div>
     </div>
 
-
     <div class="col-md-4">
       <label for="rua" class="form-label">Rua</label>
       <input
@@ -273,7 +308,6 @@
         Digite um Logradouro.
       </div>
     </div>
-
 
     <div class="col-md-2">
       <label for="uf" class="form-label">UF</label>
@@ -306,32 +340,27 @@
         Selecione um estado.
       </div>
     </div>
-
-
   </div>
 
-
   <div class="row my-3">
-
-
-    <div
-      class="col-md d-flex justify-content-center"
-      [ngClass]="{
-      'align-items-end': !this.form.get('rua')?.touched || !this.form.get('uf')?.touched,
-      'align-items-center': (this.form.get('rua')?.invalid &&
-            (this.form.get('rua')?.touched || this.form.get('rua')?.dirty)) || (this.form.get('uf')?.invalid &&
-            (this.form.get('uf')?.touched || this.form.get('uf')?.dirty)),
-    }"
-    >
+    <div class="col-md d-flex justify-content-center flex-column">
+      <div *ngIf="verifyEmailSent" class="alert alert-success h-25 d-flex align-items-center" role="alert">
+        Um e-mail de verificação foi enviado! Verifique sua caixa de entrada.
+      </div>
+      <div *ngIf="emailAlreadyRegistered" class="alert alert-danger h-25 d-flex align-items-center" role="alert">
+        O e-mail fornecido já foi registrado! Verifique sua caixa de entrada.
+      </div>
+      <div *ngIf="usernameAlreadyRegistered" class="alert alert-danger h-25 d-flex align-items-center" role="alert">
+        O nome de usuário já está cadastrado, por favor, escolha outro nome.
+      </div>
       <button
         type="submit"
+        [disabled]="buttonDisable"
         class="btn btn-success w-md-50 w-100 h-md-50 mt-2 mt-md-0"
         (click)="salvar()"
       >
         Cadastrar
       </button>
     </div>
-
-
   </div>
 </form>

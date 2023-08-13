@@ -7,6 +7,9 @@ import { HowtoplayComponent } from './howtoplay/howtoplay.component';
 import { ProfileComponent } from './user/profile/profile.component';
 import { DataComponent } from './user/profile/data/data.component';
 import { HistoryComponent } from './user/profile/history/history.component';
+import { LocationsComponent } from './locations/locations.component';
+import { LocationComponent } from './locations/location/location.component';
+import { ResendEmailComponent } from './user/login/resend-email/resend-email.component';
 
 const routes: Routes = [
   {
@@ -39,6 +42,20 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'locais',
+    component: LocationsComponent,
+    children: [
+      {
+        path: ':id',
+        component: LocationComponent,
+      },
+    ],
+  },
+  {
+    path: 'reenviar-email-verificacao',
+    component: ResendEmailComponent,
+  },
 ];
 
 @NgModule({
@@ -46,3 +63,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+export const routingComponents = [LocationComponent,]

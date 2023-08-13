@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { RegisterApiService } from './api/register-api.service';
+
 import { CpfValidator } from 'src/app/utils/cpf_validator';
 import { SelectValidator } from 'src/app/utils/select_validator';
 import { NumberValidator } from 'src/app/utils/number_validator';
 import { CepValidator } from 'src/app/utils/cep_validator';
-import { Router } from '@angular/router';
+import { usernameValidator } from 'src/app/utils/username_validator';
+import { passwordValidator } from 'src/app/utils/password_validator';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +20,10 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   form!: FormGroup;
   isDisabled: boolean = true;
+  verifyEmailSent: boolean = false;
+  emailAlreadyRegistered: boolean = false;
+  usernameAlreadyRegistered: boolean = false;
+  buttonDisable: boolean = false;
 
   estados: { sigla: string; nome: string }[] = [
     { sigla: '', nome: '' },
@@ -51,19 +59,23 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private api: RegisterApiService
   ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
+      username: ['', [Validators.required, usernameValidator.username]],
       nome: ['', [Validators.required]],
+      sobrenome: ['', [Validators.required]],
       senha: [
         '',
         [
           Validators.required,
-          Validators.minLength(4),
+          Validators.minLength(8),
           Validators.maxLength(20),
+          passwordValidator.password,
         ],
       ],
       confSenha: ['', Validators.required],
@@ -144,9 +156,9 @@ export class RegisterComponent implements OnInit {
 
     this.form.get('confSenha')?.valueChanges.subscribe((valor) => {
       let senha = this.form.get('senha').value;
-      if(valor != senha){
+      if (valor != senha) {
         this.form.get('confSenha')?.setErrors({ incorrect: true });
-        return
+        return;
       }
     });
   }
@@ -155,15 +167,41 @@ export class RegisterComponent implements OnInit {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
-    }
-    else {
-      console.log('deu certo')
+    } else {
     }
   }
 
   onSubmit() {
     if (this.form?.valid) {
-      console.log('deu certo')
+      this.buttonDisable = true;
+      this.api.registerNewUser(this.form.value).subscribe({
+        next: (data) => console.log(data),
+        error: (e) => {
+          this.buttonDisable = false;
+          console.log(e);
+          this.emailAlreadyRegistered = false;
+          this.usernameAlreadyRegistered = false;
+          if (e.error.email) {
+            this.emailAlreadyRegistered = true;
+            this.form.get('email')?.setErrors({ incorrect: true });
+            console.log(e);
+          }
+          if (e.error.username) {
+            this.usernameAlreadyRegistered = true;
+            this.form.get('username')?.setErrors({ incorrect: true });
+          }
+        },
+        complete: () => {
+          this.verifyEmailSent = true;
+          this.emailAlreadyRegistered = false;
+          this.usernameAlreadyRegistered = false;
+          this.form.disable();
+          this.buttonDisable = true;
+          setTimeout(() => {
+            this.router.navigate(['login']);
+          }, 3000);
+        },
+      });
     }
   }
 }

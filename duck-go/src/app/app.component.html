@@ -96,6 +96,7 @@
         <ul class="navbar-nav flex-grow-1 pe-md-5">
           <li class="nav-item">
             <a
+              data-bs-dismiss="offcanvas"
               class="nav-link active pe-md-5 text-secondary"
               aria-current="page"
               routerLink=""
@@ -104,6 +105,8 @@
           </li>
           <li class="nav-item">
             <a
+              data-bs-dismiss="offcanvas"
+              *ngIf="userVerified | async"
               class="nav-link active pe-md-5 text-secondary"
               routerLink="/perfil"
               >Perfil do Usuário</a
@@ -111,6 +114,7 @@
           </li>
           <li class="nav-item">
             <a
+              data-bs-dismiss="offcanvas"
               class="nav-link active pe-md-5 text-secondary"
               routerLink="/como-jogar"
               >Como Jogar</a
@@ -118,6 +122,7 @@
           </li>
           <li class="nav-item">
             <a
+              data-bs-dismiss="offcanvas"
               class="nav-link active pe-md-5 text-secondary text-danger"
               href="Parceiros.html"
               >Lista de Prêmios</a
@@ -125,27 +130,36 @@
           </li>
           <li class="nav-item">
             <a
+              data-bs-dismiss="offcanvas"
               class="nav-link active pe-md-5 text-secondary text-danger"
-              href="Parceiros.html"
+              routerLink="locais"
               >Locais de Caça</a
             >
           </li>
         </ul>
         <form class="d-flex flex-column flex-lg-row" role="search">
           <a
+            data-bs-dismiss="offcanvas"
+            *ngIf="!(userVerified | async)"
             class="btn btn-primary mx-2 my-2 my-lg-0 nav-link active p-2"
             routerLink="/register"
             >Registrar</a
           >
           <a
+            data-bs-dismiss="offcanvas"
+            *ngIf="!(userVerified | async)"
             class="btn btn-success mx-2 my-2 my-lg-0 nav-link active p-2"
             routerLink="/login"
             >Entrar</a
           >
-          <a
+          <button
+            data-bs-dismiss="offcanvas"
+            [disabled]="!logoutButton"
+            *ngIf="userVerified | async"
+            (click)="logout()"
             href=""
-            class="btn btn-danger mx-2 my-2 my-lg-0 nav-link active p-2 text-danger"
-            >Logout</a
+            class="btn btn-danger mx-2 my-2 my-lg-0 nav-link active p-2"
+            >Logout</button
           >
         </form>
       </div>

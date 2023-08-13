@@ -1,0 +1,5 @@
+<div *ngFor="let location of locations" class="container">
+  <a routerLink="{{location.id}}" >{{location.name}}</a>
+</div>
+
+<router-outlet></router-outlet>

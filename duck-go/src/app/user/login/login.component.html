@@ -22,10 +22,6 @@
                 'is-invalid':
                   this.login.get('email')?.invalid &&
                   (this.login.get('email')?.touched ||
-                    this.login.get('email')?.dirty),
-                'is-valid':
-                  this.login.get('email')?.valid &&
-                  (this.login.get('email')?.touched ||
                     this.login.get('email')?.dirty)
               }"
               formControlName="email"
@@ -50,26 +46,49 @@
                 'is-invalid':
                   this.login.get('senha')?.invalid &&
                   (this.login.get('senha')?.touched ||
-                    this.login.get('senha')?.dirty),
-                'is-valid':
-                  this.login.get('senha')?.valid &&
-                  (this.login.get('senha')?.touched ||
                     this.login.get('senha')?.dirty)
               }"
               formControlName="senha"
             />
             <div
-              *ngIf="
-                this.login.get('senha')?.invalid &&
-                !this.login.get('senha')?.errors?.maxlength &&
-                !this.login.get('senha')?.errors?.minlength
-              "
+              *ngIf="this.login.get('senha')?.invalid"
               class="invalid-feedback"
             >
               Senha inválida.
             </div>
-
-            <button type="submit" class="btn btn-primary mt-3">Entrar</button>
+            <div
+              *ngIf="verifyEmail"
+              class="alert alert-danger d-flex align-items-center mt-3"
+              role="alert"
+            >
+              <span
+                >E-mail não verificado.
+                <a [routerLink]="['../', 'reenviar-email-verificacao']" class="text-danger-emphasis"
+                  >Gostaria de reenviar o e-mail de verificão?</a
+                ></span
+              >
+            </div>
+            <div
+              *ngIf="incorrect"
+              class="alert alert-danger d-flex align-items-center mt-3"
+              role="alert"
+            >
+              Usuário ou senha incorretos
+            </div>
+            <div
+              *ngIf="success"
+              class="alert alert-success mt-3 d-flex align-items-center"
+              role="alert"
+            >
+              Login feito com sucesso!
+            </div>
+            <button
+              type="submit"
+              [disabled]="buttonDisable"
+              class="btn btn-primary mt-2"
+            >
+              Entrar
+            </button>
           </form>
         </div>
       </div>

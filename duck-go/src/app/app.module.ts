@@ -12,6 +12,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './user/profile/profile.component';
 import { DataComponent } from './user/profile/data/data.component';
 import { HistoryComponent } from './user/profile/history/history.component';
+import { LocationsComponent } from './locations/locations.component';
+import { LocationComponent } from './locations/location/location.component';
+import { ResendEmailComponent } from './user/login/resend-email/resend-email.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,9 @@ import { HistoryComponent } from './user/profile/history/history.component';
     ProfileComponent,
     DataComponent,
     HistoryComponent,
+    LocationsComponent,
+    LocationComponent,
+    ResendEmailComponent,
   ],
   imports: [
     BrowserModule,
