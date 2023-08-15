@@ -10,6 +10,8 @@ import { HistoryComponent } from './user/profile/history/history.component';
 import { LocationsComponent } from './locations/locations.component';
 import { LocationComponent } from './locations/location/location.component';
 import { ResendEmailComponent } from './user/login/resend-email/resend-email.component';
+import { AuthGuard } from './guard/auth-guard.guard';
+import { NegateAuthGuard } from './guard/negate-auth.guard';
 
 const routes: Routes = [
   {
@@ -19,10 +21,12 @@ const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [NegateAuthGuard],
   },
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [NegateAuthGuard],
   },
   {
     path: 'como-jogar',
@@ -35,12 +39,15 @@ const routes: Routes = [
       {
         path: 'dados',
         component: DataComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'historico',
         component: HistoryComponent,
+        canActivate: [AuthGuard],
       },
     ],
+    canActivate: [AuthGuard],
   },
   {
     path: 'locais',
@@ -55,6 +62,7 @@ const routes: Routes = [
   {
     path: 'reenviar-email-verificacao',
     component: ResendEmailComponent,
+    canActivate: [NegateAuthGuard],
   },
 ];
 

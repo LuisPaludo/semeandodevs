@@ -55,9 +55,6 @@ urlpatterns = [
     path('api/swagger.<slug:format>)', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
-    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-
     path("admin", admin.site.urls),
     path("", include(router.urls)),
 

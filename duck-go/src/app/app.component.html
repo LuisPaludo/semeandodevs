@@ -106,7 +106,7 @@
           <li class="nav-item">
             <a
               data-bs-dismiss="offcanvas"
-              *ngIf="userVerified | async"
+              *ngIf="(userVerified | async) || cacheUserVerified"
               class="nav-link active pe-md-5 text-secondary"
               routerLink="/perfil"
               >Perfil do Usuário</a
@@ -140,22 +140,21 @@
         <form class="d-flex flex-column flex-lg-row" role="search">
           <a
             data-bs-dismiss="offcanvas"
-            *ngIf="!(userVerified | async)"
+            *ngIf="(!(userVerified | async)) || (!cacheUserVerified)"
             class="btn btn-primary mx-2 my-2 my-lg-0 nav-link active p-2"
             routerLink="/register"
             >Registrar</a
           >
           <a
             data-bs-dismiss="offcanvas"
-            *ngIf="!(userVerified | async)"
+            *ngIf="(!(userVerified | async)) || (!cacheUserVerified)"
             class="btn btn-success mx-2 my-2 my-lg-0 nav-link active p-2"
             routerLink="/login"
             >Entrar</a
           >
           <button
             data-bs-dismiss="offcanvas"
-            [disabled]="!logoutButton"
-            *ngIf="userVerified | async"
+            *ngIf="(userVerified | async)"
             (click)="logout()"
             href=""
             class="btn btn-danger mx-2 my-2 my-lg-0 nav-link active p-2"

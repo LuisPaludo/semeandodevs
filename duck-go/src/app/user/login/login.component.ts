@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
   private handleLoginSuccess(data: any) {
     localStorage.setItem('token', JSON.stringify({ token: data.access }));
     localStorage.setItem('refresh', JSON.stringify({ refresh: data.refresh }));
+    localStorage.setItem('isVerified', JSON.stringify({ isVerified: true }));
   }
 
   private handleLoginComplete() {

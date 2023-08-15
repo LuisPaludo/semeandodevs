@@ -2,13 +2,13 @@
   <div class="row d-flex justify-content-center">
     <div class="col-6 col-md-2">
       <div class="">
-        <img src="assets/foto.jpg" class="img-thumbnail rounded float-start" />
+        <img src="{{user?.profile_photo}}" class="img-thumbnail rounded float-start" />
       </div>
     </div>
   </div>
   <div class="row d-flex justify-content-center">
     <div class="col col-md-5">
-      <p class="text-center fw-bold fs-5">User Name</p>
+      <p class="text-center fw-bold fs-5">{{user?.username | titlecase}}</p>
       <p class="text-center fw-bold fs-5">Pontuação Atual: Pontos Pontos</p>
     </div>
   </div>

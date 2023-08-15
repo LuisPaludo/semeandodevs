@@ -1,32 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { CpfValidator } from 'src/app/utils/cpf_validator';
-import { CepValidator } from 'src/app/utils/cep_validator';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ProfileApiService } from './api/profile-api.service';
+import { User } from './models/user';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
 })
-export class ProfileComponent implements OnInit {
-  profile!: FormGroup;
+export class ProfileComponent implements OnInit, OnDestroy {
+  user: User;
+  private userSubscription: Subscription;
 
-  constructor(
-    private formBuilder: FormBuilder,
-  ) {}
+  constructor(private api: ProfileApiService) {}
 
   ngOnInit(): void {
-    this.profile = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      nome: ['', [Validators.required]],
-      cpf: ['', [Validators.required, CpfValidator.cpf]],
-      cep: ['', [Validators.required, CepValidator.cep]],
-      rua: ['', Validators.required],
-      cidade: ['', Validators.required],
-      uf: ['', Validators.required],
-    });
+    if (this.api.user) {
+      this.user = this.api.user;
+    } else {
+      this.api.getUser();
+      this.userSubscription = this.api.userData$.subscribe((data: User) => {
+        if (data) {
+          this.user = this.api.user;
+        }
+      });
+    }
+  }
 
-    this.profile.disable();
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 }

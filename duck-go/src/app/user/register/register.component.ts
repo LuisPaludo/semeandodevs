@@ -24,6 +24,7 @@ export class RegisterComponent implements OnInit {
   emailAlreadyRegistered: boolean = false;
   usernameAlreadyRegistered: boolean = false;
   buttonDisable: boolean = false;
+  showTerms:boolean = false;
 
   estados: { sigla: string; nome: string }[] = [
     { sigla: '', nome: '' },
@@ -81,9 +82,11 @@ export class RegisterComponent implements OnInit {
       confSenha: ['', Validators.required],
       cpf: ['', [Validators.required, CpfValidator.cpf]],
       cep: ['', [Validators.required, CepValidator.cep]],
-      rua: ['', Validators.required],
-      cidade: ['', Validators.required],
-      uf: ['', Validators.required],
+      rua: ['', [Validators.required]],
+      cidade: ['', [Validators.required]],
+      uf: ['', [Validators.required]],
+      data_nascimento: ['', [Validators.required]],
+      termos: ['', Validators.requiredTrue]
     });
 
     this.subscribeForms();
@@ -174,7 +177,7 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     if (this.form?.valid) {
       this.buttonDisable = true;
-      this.api.registerNewUser(this.form.value).subscribe({
+      this.api.registerNewUser(this.form.getRawValue()).subscribe({
         next: (data) => console.log(data),
         error: (e) => {
           this.buttonDisable = false;
@@ -203,5 +206,24 @@ export class RegisterComponent implements OnInit {
         },
       });
     }
+  }
+
+  termsandconditions() {
+    this.showTerms = true;
+  }
+
+  accept() {
+    this.showTerms = false;
+    this.form.get('termos').setValue(true, {
+      emitEvent: false,
+    });
+
+  }
+
+  recuse() {
+    this.showTerms = false;
+    this.form.get('termos').setValue(false, {
+      emitEvent: false,
+    });
   }
 }

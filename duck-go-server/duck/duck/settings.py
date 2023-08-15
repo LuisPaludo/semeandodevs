@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cleanup.apps.CleanupConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
@@ -151,6 +153,9 @@ MEDIA_ROOT = 'duck/assets'
 # você usará URLs como http://seu_domain/media/seu_arquivo.jpg.
 MEDIA_URL = '/media/'
 
+
+AUTH_USER_MODEL = 'user_data.CustomUser'
+
 REST_FRAMEWORK = {
     # Essa opção define as classes de autenticação que serão aplicadas por padrão a todas as suas vistas da API REST.
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -178,7 +183,14 @@ REST_AUTH = {
     # A opção False permite que o token JWT seja acessado por JavaScript (o que pode ser útil em algumas situações), 
     # enquanto True impede que o JavaScript acesse o token, aumentando a segurança.
     'JWT_AUTH_HTTPONLY': False,
-    'REGISTER_SERIALIZER': 'user_data.api.serializers.CustomRegisterSerializer'
+    'REGISTER_SERIALIZER': 'user_data.api.serializers.CustomRegisterSerializer',
+    'USER_DETAILS_SERIALIZER': 'user_data.api.serializers.CustomUserSerializer',
+
+}
+
+ACCESS_TOKEN_LIFETIME = config('ACCESS_TOKEN_LIFETIME', default=5, cast=int)
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=ACCESS_TOKEN_LIFETIME),
 }
 
 
