@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginApiService } from './api/login-api.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/api/authentication-service.service';
 
 @Component({
   selector: 'app-login',
@@ -10,14 +11,23 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   login!: FormGroup;
+  resend!: FormGroup;
+
   buttonDisable: boolean = false;
   verifyEmail: boolean = false;
   incorrect: boolean = false;
   success: boolean = false;
 
+  sendEmail: boolean = false;
+  resendIncorrect: boolean = false;
+  resendSuccess: boolean = false;
+  buttonSend: boolean = false;
+  buttonBack:boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
-    private api: LoginApiService,
+    private apiLogin: LoginApiService,
+    private api: AuthenticationService,
     private router: Router
   ) {}
 
@@ -26,12 +36,16 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required]],
     });
+
+    this.resend = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
   }
 
   onSubmit() {
     if (this.login?.valid) {
       this.buttonDisable = true;
-      this.api.Login(this.login.value).subscribe({
+      this.apiLogin.Login(this.login.value).subscribe({
         next: (data) => {
           this.handleLoginSuccess(data);
         },
@@ -41,7 +55,6 @@ export class LoginComponent implements OnInit {
           this.verifyEmail = false;
           this.incorrect = false;
           if (e.error.email) {
-            // this.emailAlreadyRegistered = true;
             this.login.get('email')?.setErrors({ incorrect: true });
             console.log(e);
           }
@@ -66,9 +79,9 @@ export class LoginComponent implements OnInit {
   }
 
   private handleLoginSuccess(data: any) {
-    localStorage.setItem('token', JSON.stringify({ token: data.access }));
-    localStorage.setItem('refresh', JSON.stringify({ refresh: data.refresh }));
-    localStorage.setItem('isVerified', JSON.stringify({ isVerified: true }));
+    localStorage.setItem('token', data.access );
+    localStorage.setItem('refresh', data.refresh);
+    localStorage.setItem('isVerified', 'true' );
   }
 
   private handleLoginComplete() {
@@ -77,13 +90,48 @@ export class LoginComponent implements OnInit {
     this.verifyEmail = false;
     this.incorrect = false;
     this.success = true;
+    this.api.currentToken.next(localStorage.getItem('token'));
+    this.api.isAuthenticated.subscribe({
+      next: (isVerified) => {
+        if(isVerified){
+          setTimeout(() => {
+            this.router.navigate(['']);
+          }, 2000);
+        }
+      }
+    });
 
-    setTimeout(() => {
-      this.router.navigate(['']);
-    }, 2000);
+
   }
 
   redirect() {
-    this.router.navigate(['reenviar-email-verificacao']);
+    if(this.sendEmail) {
+      this.sendEmail = false;
+      this.verifyEmail = false;
+    } else {
+      this.sendEmail = true;
+    }
+      // this.login.markAsUntouched();
+  }
+
+  send() {
+
+    if (this.resend?.valid) {
+      this.buttonSend = true;
+      this.buttonBack = true;
+      this.apiLogin.resendEmail(this.resend.getRawValue()).subscribe({
+        next: () => {
+          console.log('Email Enviado com sucesso')
+          this.resendSuccess = true;
+          this.buttonBack = false;
+        },
+        error: (e) => {
+          console.error('Erro -> ' + e)
+        }
+      })
+
+    } else {
+      this.resend.markAllAsTouched();
+    }
   }
 }

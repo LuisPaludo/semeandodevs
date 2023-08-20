@@ -8,6 +8,7 @@ import { User } from '../models/user';
 import { Subscription, filter, switchMap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { UserDataApiService } from './api/user-data-api.service';
+import { CepModel } from '../models/cep';
 
 @Component({
   selector: 'app-data',
@@ -56,7 +57,7 @@ export class DataComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private api: ProfileApiService,
+    private profileApi: ProfileApiService,
     private http: HttpClient,
     private apiPatchUser: UserDataApiService
   ) {
@@ -75,29 +76,26 @@ export class DataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.api.user) {
-      this.patchForm(this.api.user);
-    } else {
-      this.api.getUser();
-      this.userSubscription = this.api.userData$.subscribe((data: User) => {
-        if (data) {
+
+    this.profileApi.userData$.subscribe({
+      next: (data) => {
+        if(data){
           this.patchForm(data);
         }
-      });
-    }
+      }
+    })
   }
 
   subscribeForms(): void {
     this.cepSubscription = this.profile
       .get('cep')
       ?.valueChanges.pipe(
-        // Filtro para garantir que o CEP é válido antes de fazer a chamada HTTP
         filter(() => this.profile.get('cep')?.valid),
         switchMap((valor) =>
           this.http.get<any>(`https://viacep.com.br/ws/${valor}/json/`)
         )
       )
-      .subscribe((data) => {
+      .subscribe((data:CepModel) => {
         if (data.erro) {
           this.handleCepError();
           return;
@@ -179,7 +177,7 @@ export class DataComponent implements OnInit {
 
   cancel() {
     this.userEditing = false;
-    this.patchForm(this.api.user);
+    // this.patchForm(this.profileApi.api.user);
     if (this.cepSubscription) {
       this.cepSubscription.unsubscribe();
     }

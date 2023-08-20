@@ -178,16 +178,13 @@ export class RegisterComponent implements OnInit {
     if (this.form?.valid) {
       this.buttonDisable = true;
       this.api.registerNewUser(this.form.getRawValue()).subscribe({
-        next: (data) => console.log(data),
         error: (e) => {
           this.buttonDisable = false;
-          console.log(e);
           this.emailAlreadyRegistered = false;
           this.usernameAlreadyRegistered = false;
           if (e.error.email) {
             this.emailAlreadyRegistered = true;
             this.form.get('email')?.setErrors({ incorrect: true });
-            console.log(e);
           }
           if (e.error.username) {
             this.usernameAlreadyRegistered = true;

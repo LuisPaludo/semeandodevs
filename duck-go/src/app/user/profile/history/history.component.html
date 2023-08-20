@@ -10,11 +10,11 @@
       <div class="border border-1 border-dark col-2">Saldo</div>
     </div>
 
-    <div class="row text-center fw-bold">
-      <div class="border border-1 border-dark col-3"></div>
-      <div class="border border-1 border-dark col-5"></div>
-      <div class="border border-1 border-dark col-2"></div>
-      <div class="border border-1 border-dark col-2"></div>
+    <div *ngFor="let entry of history" class="row text-center fw-bold">
+      <div class="border border-1 border-dark col-3">{{entry.date | date:'short'}}</div>
+      <div class="border border-1 border-dark col-5">{{entry.description}}</div>
+      <div class="border border-1 border-dark col-2">{{entry.points}}</div>
+      <div class="border border-1 border-dark col-2">{{entry.total_points}}</div>
     </div>
   </div>
 </div>

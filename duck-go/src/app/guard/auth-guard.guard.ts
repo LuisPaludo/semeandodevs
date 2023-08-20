@@ -5,9 +5,9 @@ import {
   Router,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { ApiService } from '../api/api.service';
+import { AuthenticationService } from '../api/authentication-service.service';
 
 
 @Injectable({
@@ -15,7 +15,7 @@ import { ApiService } from '../api/api.service';
 })
 
 export class AuthGuard{
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private api: AuthenticationService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -29,17 +29,26 @@ export class AuthGuard{
       ).isVerified;
     }
 
-
-    return this.apiService.isUserVerified().pipe(
-      map(isLoggedIn => {
-        console.log(isLoggedIn);
-        if (!(isLoggedIn || cacheAuthUser)) {
+    return this.api.isAuthenticated.pipe(map(
+      isLoggedIn => {
+        if (!isLoggedIn) {
           this.router.navigate(['']);
           return false
         }
-          return true
-      })
-    )
+        return true
+      }
+    ))
+
+
+    // return this.apiService.isUserVerified().pipe(
+    //   map(isLoggedIn => {
+    //     if (!(isLoggedIn || cacheAuthUser)) {
+    //       this.router.navigate(['']);
+    //       return false
+    //     }
+    //       return true
+    //   })
+    // )
   }
 }
 

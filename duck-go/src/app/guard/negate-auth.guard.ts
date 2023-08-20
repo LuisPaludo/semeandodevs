@@ -5,15 +5,15 @@ import {
   Router,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, tap, last } from 'rxjs/operators';
-import { ApiService } from '../api/api.service';
+import { AuthenticationService } from '../api/authentication-service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NegateAuthGuard {
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private api: AuthenticationService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -25,15 +25,24 @@ export class NegateAuthGuard {
       cacheAuthUser = JSON.parse(localStorage.getItem('isVerified')).isVerified;
     }
 
-    return this.apiService.isUserVerified().pipe(
+    return this.api.isAuthenticated.pipe(
       map((isLoggedIn) => {
-        console.log(isLoggedIn);
-        if (!(isLoggedIn || cacheAuthUser)) {
+        if (!isLoggedIn) {
           return true;
         }
         this.router.navigate(['']);
         return false;
       })
     );
+
+    // return this.apiService.isUserVerified().pipe(
+    //   map((isLoggedIn) => {
+    //     if (!(isLoggedIn || cacheAuthUser)) {
+    //       return true;
+    //     }
+    //     this.router.navigate(['']);
+    //     return false;
+    //   })
+    // );
   }
 }

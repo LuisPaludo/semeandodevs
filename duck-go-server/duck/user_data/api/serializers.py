@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
-from user_data.models import CustomUser
+from user_data.models import CustomUser, History
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,6 +14,16 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'addres_rua', 'address_UF', 'address_cidade', 
             'profile_photo', 'data_nascimento'
         )
+
+class HistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = History
+        fields = ('date','points','total_points','description')
+
+    def create(self, validated_data):
+        user = validated_data.pop('user', self.context['request'].user)
+        history = History.objects.create(user=user, **validated_data)
+        return history
 
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=50)

@@ -43,7 +43,6 @@ export class RegisterApiService {
   constructor(private http: HttpClient) {}
 
   registerNewUser(userData): Observable<any> {
-    console.log(userData);
 
     const postData = {
       username: userData.username,
@@ -61,7 +60,6 @@ export class RegisterApiService {
       accepted_terms: userData.termos,
     };
 
-    console.log(postData);
     return this.http.post(this.locationUrl, postData, {
       headers: this.httpHeaders,
     });

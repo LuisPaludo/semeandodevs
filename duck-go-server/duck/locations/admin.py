@@ -8,4 +8,4 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(TuristicPoint)
 class TuristicPointAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'name','points')

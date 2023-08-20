@@ -14,137 +14,217 @@ import {
   throwError,
 } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserDataApiService } from '../user/profile/data/api/user-data-api.service';
+import { ProfileApiService } from '../user/profile/api/profile-api.service';
+import { User } from '../user/profile/models/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  verifyUrl: string = 'http://127.0.0.1:8000/accounts/token/verify/';
-  refreshUrl: string = 'http://127.0.0.1:8000/accounts/token/refresh/';
-  logoutUrl: string = 'http://127.0.0.1:8000/accounts/logout/';
+  // verifyUrl: string = 'http://127.0.0.1:8000/accounts/token/verify/';
+  // refreshUrl: string = 'http://127.0.0.1:8000/accounts/token/refresh/';
+  // logoutUrl: string = 'http://127.0.0.1:8000/accounts/logout/';
 
-  httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  // httpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  private userVerified = new BehaviorSubject<boolean>(false);
-  private isAccessInProgress = false;
-  private isRefreshInProgress = false;
+  // private userVerified = new BehaviorSubject<boolean>(false);
+  // private isAccessInProgress: boolean = false;
+  // private isRefreshInProgress: boolean = false;
+  // private logoutRequested: boolean = false;
 
-  private lastVerified: Date | null = null;
-  private cacheDuration = 1 * 60 * 1000; // 5 minutos
+  // private lastVerified: Date | null = null;
+  // private cacheDuration: number = 0.9 * 60 * 1000; // 1 minutos
+  // public user: User;
 
-  constructor(private http: HttpClient, private router: Router) {
-  }
+  // constructor(private http: HttpClient, private router: Router) {}
 
-  access(): void {
-    if (this.isCacheStillValid()) {
-      this.userVerified.next(true);
-      return;
-    }
-    if (this.isAccessInProgress) return;
+  // access(): void {
+  //   if (this.isCacheStillValid()) {
+  //     return;
+  //   }
 
-    const accessToken: string = localStorage.getItem('token');
-    if (!accessToken) {
-      this.userVerified.next(false);
-      return;
-    }
+  //   if (this.isAccessInProgress) {
+  //     console.error('Há uma verificação em andamento');
+  //     return;
+  //   }
 
-    this.isAccessInProgress = true;
+  //   const accessToken: string = localStorage.getItem('token');
+  //   if (!accessToken) {
+  //     console.error('Não existem token armazenado no sistema');
+  //     return;
+  //   }
 
-    this.http
-      .post(this.verifyUrl, accessToken, {
-        headers: this.httpHeaders,
-      })
-      .subscribe({
-        next: () => {
-          this.lastVerified = new Date();
-          this.userVerified.next(true);
-          this.isAccessInProgress = false;
-        },
-        error: (error) => {
-          this.isAccessInProgress = false;
-          if (error.status === 401 && !this.isRefreshInProgress) {
-            this.userVerified.next(false);
-            this.refresh();
-          } else {
-            localStorage.setItem(
-              'isVerified',
-              JSON.stringify({ isVerified: false })
-            );
-            this.router.navigate(['login']);
-          }
-        },
-      });
-  }
+  //   this.isAccessInProgress = true;
 
-  refresh(): void {
-    if (this.isRefreshInProgress) return;
+  //   this.http
+  //     .post(this.verifyUrl, accessToken, {
+  //       headers: this.httpHeaders,
+  //     })
+  //     .subscribe({
+  //       next: () => {
+  //         console.info('Verificação feita com sucesso');
+  //         this.lastVerified = new Date();
+  //         this.isVerifiedTrue();
+  //         this.isAccessInProgress = false;
+  //         if (this.logoutRequested) {
+  //           this.logout();
+  //         }
+  //       },
+  //       error: (error) => {
+  //         this.isAccessInProgress = false;
+  //         if (error.status === 401 && !this.isRefreshInProgress) {
+  //           console.error('Token não autenticado -> Chamando o refresh');
+  //           this.isVerifiedFalse();
+  //           this.refresh();
+  //         } else {
+  //           console.error('Token inválido e Refresh Token inválidos');
+  //           this.isVerifiedFalse();
+  //           this.router.navigate(['login']);
+  //         }
+  //       },
+  //     });
+  // }
 
-    const refreshToken: string = localStorage.getItem('refresh');
-    if (!refreshToken) {
-      this.userVerified.next(false);
-      return;
-    }
+  // refresh(): void {
+  //   if (this.isRefreshInProgress) {
+  //     console.error('Refresh já está em andamento');
+  //     return;
+  //   }
 
-    this.isRefreshInProgress = true;
+  //   const refreshToken: string = localStorage.getItem('refresh');
 
-    this.http
-      .post(this.refreshUrl, refreshToken, {
-        headers: this.httpHeaders,
-      })
-      .subscribe({
-        next: (data: any) => {
-          this.isRefreshInProgress = false;
-          localStorage.setItem('token', JSON.stringify({ token: data.access }));
-          localStorage.setItem(
-            'isVerified',
-            JSON.stringify({ isVerified: true })
-          );
-          this.userVerified.next(true);
-        },
-        error: (error) => {
-          this.isRefreshInProgress = false;
-          localStorage.setItem(
-            'isVerified',
-            JSON.stringify({ isVerified: false })
-          );
-          this.userVerified.next(false);
-          this.router.navigate(['login']);
-        },
-      });
-  }
+  //   if (!refreshToken) {
+  //     this.isVerifiedFalse();
+  //     console.error('Token de refresh não existe');
+  //     return;
+  //   }
 
-  isUserVerified(): Observable<boolean> {
-    this.access();
-    return this.userVerified.asObservable().pipe(catchError(() => of(false)));
-  }
+  //   this.isRefreshInProgress = true;
 
-  logout(): void {
-    const accessToken: string = JSON.parse(localStorage.getItem('token')).token;
-    const VerifiedHttpHeaders = new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + accessToken,
-    });
+  //   this.http
+  //     .post(this.refreshUrl, refreshToken, {
+  //       headers: this.httpHeaders,
+  //     })
+  //     .subscribe({
+  //       next: (data: any) => {
+  //         console.info('Refresh feito com sucesso');
+  //         this.isRefreshInProgress = false;
+  //         localStorage.setItem('token', JSON.stringify({ token: data.access }));
+  //         this.isUserVerified();
+  //       },
+  //       error: (error) => {
+  //         console.error('Refresh Token Inválido');
+  //         this.isRefreshInProgress = false;
+  //         this.isVerifiedFalse();
+  //         this.router.navigate(['login']);
+  //       },
+  //     });
+  // }
 
-    this.http
-      .post(this.logoutUrl, '', {
-        headers: VerifiedHttpHeaders,
-      })
-      .subscribe({
-        next: () => {
-          localStorage.clear();
-          this.userVerified.next(false);
-          this.router.navigate(['login']);
-        },
-        error: (error) => {},
-      });
-  }
+  // isUserVerified(): Observable<boolean> {
+  //   if (this.isCacheStillValid()) {
+  //     return of(true);
+  //   } else {
+  //     this.access();
+  //     return this.userVerified.asObservable();
+  //   }
+  // }
 
-  private isCacheStillValid(): boolean {
-    if (!this.lastVerified) {
-      return false;
-    }
-    const now = new Date();
-    return now.getTime() - this.lastVerified.getTime() <= this.cacheDuration;
-  }
+  // isVerifiedTrue() {
+  //   localStorage.setItem('isVerified', JSON.stringify({ isVerified: true }));
+  //   this.userVerified.next(true);
+  // }
+
+  // isVerifiedFalse() {
+  //   localStorage.setItem('isVerified', JSON.stringify({ isVerified: false }));
+  //   this.userVerified.next(false);
+  // }
+
+  // performLogout(): void {
+  //   let cache = this.isCacheStillValid();
+
+  //   if (!cache) {
+  //     console.error('Token inválido, logout cancelado.');
+  //     return;
+  //   }
+
+  //   this.logoutRequested = false;
+
+  //   const accessToken: string = JSON.parse(localStorage.getItem('token')).token;
+  //   if (!accessToken) {
+  //     console.error('Token de acesso inválido');
+  //     return;
+  //   }
+
+  //   let VerifiedHttpHeaders = new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     Authorization: 'Bearer ' + accessToken,
+  //   });
+
+  //   this.http
+  //     .post(this.logoutUrl, '', { headers: VerifiedHttpHeaders })
+  //     .subscribe({
+  //       next: () => {
+  //         console.info('Logout Realizado com suscesso');
+
+  //         this.logoutRequested = false;
+  //         this.isVerifiedFalse();
+  //         localStorage.clear();
+  //         this.router.navigate(['login']);
+  //         this.lastVerified = null;
+  //         this.user = null;
+  //       },
+  //       error: (error) => {
+  //         console.error('Erro ao tentar fazer logout:', error);
+  //       },
+  //     });
+  // }
+
+  // logout(): void {
+  //   if (this.isCacheStillValid()) {
+  //     this.performLogout();
+  //   } else {
+  //     this.logoutRequested = true;
+  //     this.isUserVerified().subscribe((isVerified) => {
+  //       if (isVerified) {
+  //         console.info('usuário verificado, chamando o logout');
+  //         this.performLogout();
+  //       } else {
+  //         console.error('Não foi possível verificar o usuário');
+  //       }
+  //     });
+  //   }
+  // }
+
+  // isCacheStillValid(): boolean {
+  //   if (!this.lastVerified) {
+  //     console.info('cache invalido');
+  //     return false;
+  //   }
+
+  //   if (!localStorage.getItem('token')) {
+  //     console.info('cache invalido');
+  //     return false;
+  //   }
+
+  //   if (!localStorage.getItem('refresh')) {
+  //     console.info('cache invalido');
+  //     return false;
+  //   }
+
+  //   const now = new Date();
+  //   const time_left = now.getTime() - this.lastVerified.getTime();
+
+  //   console.info(
+  //     'Duração do cache -> ' +
+  //       this.cacheDuration +
+  //       ' Falta -> ' +
+  //       time_left +
+  //       ' ? ' +
+  //       (time_left <=
+  //       this.cacheDuration)
+  //   );
+  //   return time_left <= this.cacheDuration;
+  // }
 }
-

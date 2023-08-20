@@ -10,6 +10,8 @@ import { LocationApiService } from './api/location-api.service';
 })
 export class LocationsComponent {
   locations: any;
+  location:any;
+  showAll:boolean = true;
 
   constructor(private api: LocationApiService) {
     this.getLocations();
@@ -22,4 +24,14 @@ export class LocationsComponent {
       complete: () => {}
     });
   };
+
+  redirect(id) {
+    this.showAll = false;
+    this.location = this.locations[id-1];
+  }
+
+  goBack(){
+    this.showAll = true;
+    this.location = null;
+  }
 }

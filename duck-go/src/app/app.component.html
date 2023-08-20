@@ -106,7 +106,7 @@
           <li class="nav-item">
             <a
               data-bs-dismiss="offcanvas"
-              *ngIf="(userVerified | async) || cacheUserVerified"
+              *ngIf="userVerified"
               class="nav-link active pe-md-5 text-secondary"
               routerLink="/perfil"
               >Perfil do Usuário</a
@@ -131,36 +131,36 @@
           <li class="nav-item">
             <a
               data-bs-dismiss="offcanvas"
-              class="nav-link active pe-md-5 text-secondary text-danger"
+              class="nav-link active pe-md-5 text-secondary"
               routerLink="locais"
               >Locais de Caça</a
             >
           </li>
         </ul>
-        <form class="d-flex flex-column flex-lg-row" role="search">
+        <div class="d-flex flex-column flex-lg-row" >
           <a
             data-bs-dismiss="offcanvas"
-            *ngIf="(!(userVerified | async)) || (!cacheUserVerified)"
+            *ngIf="!userVerified"
             class="btn btn-primary mx-2 my-2 my-lg-0 nav-link active p-2"
             routerLink="/register"
             >Registrar</a
           >
           <a
             data-bs-dismiss="offcanvas"
-            *ngIf="(!(userVerified | async)) || (!cacheUserVerified)"
+            *ngIf="!userVerified"
             class="btn btn-success mx-2 my-2 my-lg-0 nav-link active p-2"
             routerLink="/login"
             >Entrar</a
           >
           <button
             data-bs-dismiss="offcanvas"
-            *ngIf="(userVerified | async)"
+            *ngIf="userVerified"
             (click)="logout()"
             href=""
             class="btn btn-danger mx-2 my-2 my-lg-0 nav-link active p-2"
             >Logout</button
           >
-        </form>
+        </div>
       </div>
     </div>
   </div>

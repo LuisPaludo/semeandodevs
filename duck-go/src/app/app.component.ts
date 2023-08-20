@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from './api/api.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { AuthenticationService } from './api/authentication-service.service';
 
 @Component({
   selector: 'app-root',
@@ -12,20 +13,37 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'duck-go';
 
   cacheUserVerified: boolean;
-  userVerified: Observable<boolean>;
+  userVerified: boolean = false;
   private subscription: Subscription;
+  private verification: Subscription;
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(private api: AuthenticationService, private router: Router) {}
 
   ngOnInit() {
+    this.api.isAuthenticated.subscribe({
+      next: (isVerified) => {
+        if (isVerified) {
+          this.userVerified = true;
+        } else {
+          this.userVerified = false;
+        }
+      },
+    });
+
     this.subscription = this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
-        this.userVerified = this.api.isUserVerified();
-        if (localStorage.getItem('isVerified')) {
-          this.cacheUserVerified = JSON.parse(
-            localStorage.getItem('isVerified')
-          ).isVerified;
-        }
+        this.verification = this.api.userAuthenticated.subscribe({
+          next: (isVerified) => {
+            if (isVerified) {
+              this.userVerified = true;
+            } else {
+              this.userVerified = false;
+            }
+          },
+          complete: () => {
+            this.verification.unsubscribe();
+          },
+        });
       }
     });
   }
