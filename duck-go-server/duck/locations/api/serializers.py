@@ -35,5 +35,6 @@ class TuristicPointSerializer(ModelSerializer):
             'location',
             'coordinates_lat',
             'coordinates_long',
-            'points'
+            'points',
+            'photo'
         )

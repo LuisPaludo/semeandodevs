@@ -8,7 +8,7 @@ from .serializers import TuristicPointSerializer
 from locations.models import TuristicPoint
 
 class LocationViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)  # NOVA LINHA
+    permission_classes = (AllowAny,) 
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
     http_method_names = ["get"]

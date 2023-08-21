@@ -16,28 +16,28 @@ class Location(models.Model):
     coordinates_long = models.CharField(max_length=255, default="")
     slug_field = models.SlugField(default="", blank=True, null=True)
     locations_photo = models.ImageField(
-        upload_to="users_photos",
+        upload_to="Locations",
         null=True,
         blank=True,
         validators=[validate_image_size],
         max_length=500,
     )
     photo_1 = models.ImageField(
-        upload_to="users_photos",
+        upload_to="Locations",
         null=True,
         blank=True,
         validators=[validate_image_size],
         max_length=500,
     )
     photo_2 = models.ImageField(
-        upload_to="users_photos",
+        upload_to="Locations",
         null=True,
         blank=True,
         validators=[validate_image_size],
         max_length=500,
     )
     photo_3 = models.ImageField(
-        upload_to="users_photos",
+        upload_to="Locations",
         null=True,
         blank=True,
         validators=[validate_image_size],
@@ -60,6 +60,7 @@ class TuristicPoint(models.Model):
     coordinates_lat = models.CharField(max_length=255, default="")
     coordinates_long = models.CharField(max_length=255, default="")
     points = models.IntegerField(validators=[MinValueValidator(0)], default=0)
+    photo = models.ImageField(upload_to='Locations/Touristic_Points', null=True, blank=True, validators=[validate_image_size], max_length=500)    
 
     def __str__(self) -> str:
         return f"{self.name} -> Points: {self.points}"

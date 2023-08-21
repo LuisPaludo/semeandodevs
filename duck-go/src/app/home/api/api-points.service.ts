@@ -24,6 +24,7 @@ export class ApiPointsService {
   public userHistory$ = this.userHistorySubject.asObservable();
 
   public getPointSuccess:boolean = false;
+  public manyGetPoints:boolean = false;
 
   verified: boolean = false;
   postRequest: boolean = false;
@@ -32,6 +33,11 @@ export class ApiPointsService {
   isGettingPoints: boolean = false;
   qrIdNumberCache: number;
   coordsCache: GeolocationCoordinates;
+
+  public locationName:string;
+  public locationDescription:string;
+  public locationPhoto:string;
+  public locationPoints:number;
 
   user: GeoPoint;
   center: GeoPoint;
@@ -73,16 +79,22 @@ export class ApiPointsService {
             const result = this.isWithinRadius(this.user, this.center, 1000);
 
             if (result) {
-              console.log('Chando getTotalPoints');
-              this.getUserHistory().subscribe({
-                next: (userData: UserHistory[]) => {
-                  let total_points = 0;
-                  if (userData.length !== 0) {
-                    total_points = userData[userData.length - 1].total_points;
-                  }
-                  this.savePoints(points, total_points, 'add', locationName);
-                },
-              });
+              this.locationName = locationData[0].name;
+              this.locationDescription = locationData[0].description;
+              this.locationPhoto = locationData[0].photo;
+              // this.locationPoints = locationData[0].points;
+
+              this.savePoints(points, 0, 'add', locationName);
+
+              // this.getUserHistory().subscribe({
+              //   next: (userData: UserHistory[]) => {
+              //     let total_points = 0;
+              //     if (userData.length !== 0) {
+              //       total_points = userData[userData.length - 1].total_points;
+              //     }
+
+              //   },
+              // });
             }
           } else {
             console.error('Código inválido');
@@ -154,14 +166,12 @@ export class ApiPointsService {
           console.error('Usuário não posui pontos suficientes para a operação.')
         );
       }
-
       total_points = total_points - points;
     }
 
     const postData: HistoryPost = new HistoryPost();
 
     postData.points = points;
-    postData.total_points = total_points;
     postData.description = 'Ponto Turístico -> ' + name;
 
     this.http
@@ -169,12 +179,17 @@ export class ApiPointsService {
         headers: VerifiedHttpHeaders,
       })
       .subscribe({
-        next: (info) => {
+        next: (info:HistoryPost) => {
+          this.locationPoints = info.points;
+          this.getPointSuccess = true;
           this.isSaving = false;
         },
         error: (e) => {
           this.isSaving = false;
-          console.error(e);
+          if(e.status === 429) {
+            this.manyGetPoints = true;
+            console.error('DEU RUIM RAPAZ')
+          }
         },
       });
   }

@@ -278,5 +278,32 @@
 </div>
 
 <div *ngIf="apiPoints.getPointSuccess">
+  <div class="container">
+    <div class="container p-2">
+      <div class="card">
+        <div class="container d-flex justify-content-center">
+          <img
+            src="{{ apiPoints.locationPhoto }}"
+            alt="Foto do local"
+            class="card-img-top"
+            style="width: 150px; height: 150px"
+          />
+        </div>
 
+        <div class="card-body">
+          <h2 class="card-title">{{ apiPoints.locationName }}</h2>
+          <p class="card-text">{{ apiPoints.locationDescription }}</p>
+          <div class="alert alert-success mt-2">
+            Parabéns! Você ganhou
+            <strong>{{ apiPoints.locationPoints }} pontos</strong> por visitar
+            este local.
+          </div>
+          <p class="mt-1">
+            Não pare por aqui! Continue explorando e jogando para acumular ainda
+            mais pontos. Cada nova aventura traz novas recompensas. Vamos nessa!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

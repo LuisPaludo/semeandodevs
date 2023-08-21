@@ -1,4 +1,5 @@
-from typing import Required
+from django.db.models import Sum
+from django.utils import timezone
 from rest_framework import serializers, validators
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.models import User
@@ -15,13 +16,33 @@ class CustomUserSerializer(serializers.ModelSerializer):
             'profile_photo', 'data_nascimento'
         )
 
-class HistorySerializer(serializers.ModelSerializer):
+class HistorySerializer(serializers.ModelSerializer):    
     class Meta:
         model = History
-        fields = ('date','points','total_points','description')
+        fields = ('date', 'points', 'total_points', 'description')
+        read_only_fields = ('total_points',) # tornando 'total_points' somente leitura
 
     def create(self, validated_data):
         user = validated_data.pop('user', self.context['request'].user)
+
+        # Verificar a soma total de pontos que o usuário obteve hoje
+        today_min = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        today_max = timezone.now().replace(hour=23, minute=59, second=59, microsecond=999999)
+        total_points_today = History.objects.filter(user=user, date__range=(today_min, today_max)).aggregate(total_points=Sum('points'))['total_points'] or 0
+
+        # Calcule o total_points
+        daily_limit = 550
+        points = validated_data.get('points', 0)
+        points_left_for_today = daily_limit - total_points_today
+        
+        # Se os pontos deste post excederem o limite diário, ajuste-os
+        if points_left_for_today < points:
+            validated_data['points'] = points_left_for_today
+
+        # Calcule o total_points
+        previous_total_points = user.user_history.aggregate(total_points=Sum('points'))['total_points'] or 0
+        validated_data['total_points'] = previous_total_points + validated_data['points']
+
         history = History.objects.create(user=user, **validated_data)
         return history
 

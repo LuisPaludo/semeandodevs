@@ -8,4 +8,5 @@ export class PointData {
   coordinates_lat: number;
   coordinates_long: number;
   points: number;
+  photo: string;
 }

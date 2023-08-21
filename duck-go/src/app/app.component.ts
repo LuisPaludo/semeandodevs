@@ -3,6 +3,7 @@ import { ApiService } from './api/api.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { AuthenticationService } from './api/authentication-service.service';
+import { ApiPointsService } from './home/api/api-points.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private verification: Subscription;
 
-  constructor(private api: AuthenticationService, private router: Router) {}
+  constructor(private api: AuthenticationService, private router: Router, private apiPoints: ApiPointsService) {}
 
   ngOnInit() {
     this.api.isAuthenticated.subscribe({
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subscription = this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
+        this.apiPoints.getPointSuccess = false;
         this.verification = this.api.userAuthenticated.subscribe({
           next: (isVerified) => {
             if (isVerified) {
