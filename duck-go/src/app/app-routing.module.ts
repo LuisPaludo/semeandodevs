@@ -8,10 +8,12 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { DataComponent } from './user/profile/data/data.component';
 import { HistoryComponent } from './user/profile/history/history.component';
 import { LocationsComponent } from './locations/locations.component';
-import { LocationComponent } from './locations/location/location.component';
 import { ResendEmailComponent } from './user/login/resend-email/resend-email.component';
 import { AuthGuard } from './guard/auth-guard.guard';
 import { NegateAuthGuard } from './guard/negate-auth.guard';
+import { VerifyEmailComponent } from './user/register/verify-email/verify-email.component';
+import { PrizesComponent } from './prizes/prizes.component';
+import { CupounsComponent } from './user/profile/cupouns/cupouns.component';
 
 const routes: Routes = [
   {
@@ -46,24 +48,33 @@ const routes: Routes = [
         component: HistoryComponent,
         canActivate: [AuthGuard],
       },
+      {
+        path: 'meus-cupons',
+        component: CupounsComponent,
+        canActivate: [AuthGuard]
+      }
     ],
     canActivate: [AuthGuard],
   },
   {
     path: 'locais',
     component: LocationsComponent,
-    children: [
-      {
-        path: ':id',
-        component: LocationComponent,
-      },
-    ],
   },
   {
     path: 'reenviar-email-verificacao',
     component: ResendEmailComponent,
     canActivate: [NegateAuthGuard],
   },
+  {
+    path: 'verificacao-email/:key',
+    component: VerifyEmailComponent,
+    canActivate: [NegateAuthGuard],
+  },
+  {
+    path: 'premios',
+    component: PrizesComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
@@ -71,4 +82,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-export const routingComponents = [LocationComponent,]

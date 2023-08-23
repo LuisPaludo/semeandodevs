@@ -19,14 +19,13 @@ class CustomUser(AbstractUser):
     address_UF = models.CharField(max_length=2)
     address_cidade = models.CharField(max_length=255)
     email = models.EmailField()
-    profile_photo = models.ImageField(upload_to='users_photos', null=True, blank=True,default='assets/users_photos/default.png', validators=[validate_image_size], max_length=500)    
+    profile_photo = models.ImageField(upload_to='users_photos', null=True, blank=True,default='users_photos/default.png', validators=[validate_image_size], max_length=500)    
     data_nascimento = models.DateField(null=True, blank=True)
     accepted_terms = models.BooleanField(default=False)
+    is_partner = models.BooleanField(default=False)
 
-    def GetImage(self):
-        if not self.profile_photo:
-            return 'users_photos/default.png'
-
+    def __str__(self) -> str:
+        return f'{self.username}'
 
 class History(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_history')
@@ -36,4 +35,4 @@ class History(models.Model):
     description = models.CharField(max_length=255)
 
     def __str__(self) -> str:
-        return f'{self.user.username} -> date: {self.date} -> points: {self.points}'
+        return f'{self.user.username}'

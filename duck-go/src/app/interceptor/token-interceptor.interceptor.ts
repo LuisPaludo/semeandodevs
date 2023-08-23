@@ -4,66 +4,80 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, catchError, switchMap, take, throwError } from 'rxjs';
 import { AuthenticationService } from '../api/authentication-service.service';
+import { ApiPointsService } from '../home/api/api-points.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+  constructor(private auth: AuthenticationService, private apiPoints: ApiPointsService) {}
 
-  constructor(private auth: AuthenticationService) {}
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return this.auth.currentToken.pipe(
-        take(1),
-        switchMap(token => {
-            if (token) {
-              this.auth.userAuthenticated.next(true);
-                request = request.clone({
-                    setHeaders: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+      take(1),
+      switchMap((token) => {
+        if (token) {
+          this.auth.userAuthenticated.next(true);
+          request = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
+        return next.handle(request).pipe(
+          catchError((error) => {
+            if (
+              error instanceof HttpErrorResponse &&
+              error.status === 401 &&
+              this.auth.refreshTokenInProgress
+            ) {
+              return throwError(() => error);
+            } else if (
+              error instanceof HttpErrorResponse &&
+              error.status === 401
+            ) {
+              return this.handle401Error(request, next);
+            } else if (
+              error instanceof HttpErrorResponse &&
+              error.status === 429
+            ) {
+              this.apiPoints.manyGetPoints = true;
+              return throwError(() => error);
+            } else if (
+              error instanceof HttpErrorResponse &&
+              error.status === 400
+            ) {
+              return throwError(() => error );
             }
-            return next.handle(request).pipe(
-                catchError(error => {
-                    if (
-                      error instanceof HttpErrorResponse &&
-                      error.status === 401 &&
-                      this.auth.refreshFailed
-                    ) {
-                      this.auth.localLogout();
-                      return throwError(() => error);
-                    } else if (
-                      error instanceof HttpErrorResponse &&
-                      error.status === 401
-                    ) {
-                      return this.handle401Error(request, next);
-                    }
-                    this.auth.userAuthenticated.next(false);
-                    return throwError(() => error);
-                })
-            );
-        })
-    );
-}
-
-private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    return this.auth.refreshToken().pipe(
-        switchMap(() => {
-            request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${this.auth.currentToken.value}`,
-                },
-            });
-            return next.handle(request)
-        }),
-        catchError((innerError) => {
-          console.log('erro')
             this.auth.userAuthenticated.next(false);
-            return throwError(() => innerError);
-        })
+            return throwError(() => error);
+          })
+        );
+      })
     );
-}
+  }
+
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+    return this.auth.refreshToken().pipe(
+      switchMap(() => {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${this.auth.currentToken.value}`,
+          },
+        });
+        return next.handle(request);
+      }),
+      catchError((innerError) => {
+        console.log('erro');
+        this.auth.userAuthenticated.next(false);
+        return throwError(() => innerError);
+      })
+    );
+  }
+
 }

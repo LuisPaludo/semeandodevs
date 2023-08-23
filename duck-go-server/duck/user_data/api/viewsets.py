@@ -29,14 +29,14 @@ class HistoryViewSet(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         user = request.user
-        five_minutes_ago = timezone.now() - timedelta(minutes=1)
+        five_minutes_ago = timezone.now() - timedelta(minutes=5)
         
         # Verificar se uma entrada foi criada nos últimos 5 minutos
         recent_entry = History.objects.filter(user=user, date__gte=five_minutes_ago).first()
 
         if recent_entry:
             return Response({
-                'error': 'Você só pode criar uma entrada a cada 1 minutos.'
+                'error': 'Você só pode criar uma entrada a cada 5 minutos.'
             }, status=status.HTTP_429_TOO_MANY_REQUESTS)
 
         response = super().create(request, *args, **kwargs)

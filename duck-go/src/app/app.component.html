@@ -123,8 +123,9 @@
           <li class="nav-item">
             <a
               data-bs-dismiss="offcanvas"
-              class="nav-link active pe-md-5 text-secondary text-danger"
-              href="Parceiros.html"
+              *ngIf="userVerified"
+              class="nav-link active pe-md-5 text-secondary"
+              routerLink="premios"
               >Lista de Prêmios</a
             >
           </li>

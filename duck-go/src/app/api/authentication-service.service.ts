@@ -46,7 +46,7 @@ export class AuthenticationService {
       const postData = {
         refresh: refreshToken,
       };
-
+      console.log('Tentou dar refresh')
       return this.http
         .post(this.refreshUrl, postData, {
           headers: this.httpHeaders,
@@ -60,7 +60,8 @@ export class AuthenticationService {
           }),
           catchError((error) => {
             this.refreshTokenInProgress = false;
-            this.refreshFailed = true;
+            console.log('Caiu aqui')
+            this.localLogout();
             return throwError(() => error)
           })
         );

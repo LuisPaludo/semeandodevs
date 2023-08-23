@@ -221,4 +221,9 @@ export class HomeComponent implements OnInit {
   redirectToRegister() {
     this.router.navigate(['register']);
   }
+
+  goBack() {
+    this.apiPoints.getPointSuccess = false;
+    this.apiPoints.manyGetPoints = false;
+  }
 }

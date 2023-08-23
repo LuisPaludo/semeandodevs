@@ -31,7 +31,7 @@ class HistorySerializer(serializers.ModelSerializer):
         total_points_today = History.objects.filter(user=user, date__range=(today_min, today_max)).aggregate(total_points=Sum('points'))['total_points'] or 0
 
         # Calcule o total_points
-        daily_limit = 550
+        daily_limit = 700
         points = validated_data.get('points', 0)
         points_left_for_today = daily_limit - total_points_today
         

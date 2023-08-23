@@ -26,13 +26,10 @@ export class ApiPointsService {
   public getPointSuccess:boolean = false;
   public manyGetPoints:boolean = false;
 
-  verified: boolean = false;
   postRequest: boolean = false;
   isLoading: boolean = false;
   isSaving: boolean = false;
   isGettingPoints: boolean = false;
-  qrIdNumberCache: number;
-  coordsCache: GeolocationCoordinates;
 
   public locationName:string;
   public locationDescription:string;
@@ -188,7 +185,6 @@ export class ApiPointsService {
           this.isSaving = false;
           if(e.status === 429) {
             this.manyGetPoints = true;
-            console.error('DEU RUIM RAPAZ')
           }
         },
       });

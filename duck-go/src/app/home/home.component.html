@@ -1,4 +1,4 @@
-<div *ngIf="!apiPoints.getPointSuccess">
+<div *ngIf="!apiPoints.getPointSuccess && !apiPoints.manyGetPoints">
   <div
     *ngIf="!permissionDenied && !promptRegister"
     class="container d-flex flex-column justify-content-center"
@@ -278,30 +278,69 @@
 </div>
 
 <div *ngIf="apiPoints.getPointSuccess">
+  <button class="btn btn-primary mt-3 mx-3" (click)="goBack()">Voltar</button>
   <div class="container">
     <div class="container p-2">
-      <div class="card">
-        <div class="container d-flex justify-content-center">
-          <img
-            src="{{ apiPoints.locationPhoto }}"
-            alt="Foto do local"
-            class="card-img-top"
-            style="width: 150px; height: 150px"
-          />
-        </div>
-
+      <div class="container d-flex justify-content-center">
+        <img
+          src="{{ apiPoints.locationPhoto }}"
+          alt="Foto do local"
+          class="card-img-top"
+          style="width: 150px; height: 150px"
+        />
+      </div>
+      <div class="card mt-2">
         <div class="card-body">
           <h2 class="card-title">{{ apiPoints.locationName }}</h2>
           <p class="card-text">{{ apiPoints.locationDescription }}</p>
-          <div class="alert alert-success mt-2">
+          <div
+            class="alert alert-success mt-2"
+            *ngIf="!(apiPoints.locationPoints === 0)"
+          >
             Parabéns! Você ganhou
             <strong>{{ apiPoints.locationPoints }} pontos</strong> por visitar
             este local.
+          </div>
+          <div
+            *ngIf="apiPoints.locationPoints === 0"
+            class="alert alert-warning mt-2"
+          >
+            Limite de pontos diários atingidos.
           </div>
           <p class="mt-1">
             Não pare por aqui! Continue explorando e jogando para acumular ainda
             mais pontos. Cada nova aventura traz novas recompensas. Vamos nessa!
           </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="apiPoints.manyGetPoints">
+  <div class="container d-flex justify-content-between flex-column">
+    <button class="btn btn-primary mt-3 mx-2" (click)="goBack()">Voltar</button>
+    <div class="container p-2">
+      <div class="card text-center">
+        <div class="card-header bg-warning">
+          Quack! Um pequeno pato-alerta! 🦆
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Calma, aventureiro!</h5>
+          <p class="card-text">
+            Parece que você está super animado e tentou escanear outro QR Code
+            rapidinho, né? No Duck GO!, temos uma regrinha: um QR Code a cada 5
+            minutos.
+          </p>
+          <p class="card-text">
+            Enquanto aguarda, que tal explorar um pouco mais e descobrir novos
+            lugares incríveis em Pato Branco? Há muita coisa para ver e pontos
+            para ganhar!
+          </p>
+        </div>
+        <div class="card-footer text-muted">
+          O próximo QR Code está logo ali, aguardando por você. Boas aventuras e
+          quack-quack!
         </div>
       </div>
     </div>

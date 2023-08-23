@@ -206,6 +206,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
+ACCOUNT_ADAPTER = 'user_data.api.adapter.CustomAccountAdapter'
+URL_FRONTEND = config('URL_FRONTEND', default='http://localhost:4200')
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:4200",

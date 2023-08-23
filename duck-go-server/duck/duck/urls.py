@@ -8,14 +8,15 @@ from drf_yasg.views import get_schema_view
 
 
 from locations.api.viewsets import LocationViewSet, TuristicPointViewSet
-from prize.api.viewsets import PrizeViewSet
+from prize.api.viewsets import PrizesViewSet, RedeemedPrizesViewSet
 from user_data.api.viewsets import HistoryViewSet
 
 # from user_data.api.viewsets import CustomRegisterView
 
 router = routers.DefaultRouter()
 router.register("locais", LocationViewSet)
-router.register("premios", PrizeViewSet)
+router.register("premios", PrizesViewSet)
+router.register('resgatar', RedeemedPrizesViewSet)
 router.register("turistic-points", TuristicPointViewSet)
 router.register("history", HistoryViewSet, basename="history")
 

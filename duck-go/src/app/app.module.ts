@@ -13,9 +13,11 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { DataComponent } from './user/profile/data/data.component';
 import { HistoryComponent } from './user/profile/history/history.component';
 import { LocationsComponent } from './locations/locations.component';
-import { LocationComponent } from './locations/location/location.component';
 import { ResendEmailComponent } from './user/login/resend-email/resend-email.component';
 import { TokenInterceptor } from './interceptor/token-interceptor.interceptor';
+import { VerifyEmailComponent } from './user/register/verify-email/verify-email.component';
+import { PrizesComponent } from './prizes/prizes.component';
+import { CupounsComponent } from './user/profile/cupouns/cupouns.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +30,10 @@ import { TokenInterceptor } from './interceptor/token-interceptor.interceptor';
     DataComponent,
     HistoryComponent,
     LocationsComponent,
-    LocationComponent,
     ResendEmailComponent,
+    VerifyEmailComponent,
+    PrizesComponent,
+    CupounsComponent,
   ],
   imports: [
     BrowserModule,

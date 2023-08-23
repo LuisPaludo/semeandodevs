@@ -33,6 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.subscription = this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
+        this.apiPoints.manyGetPoints = false;
         this.apiPoints.getPointSuccess = false;
         this.verification = this.api.userAuthenticated.subscribe({
           next: (isVerified) => {
