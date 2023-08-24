@@ -209,9 +209,14 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_ADAPTER = 'user_data.api.adapter.CustomAccountAdapter'
 URL_FRONTEND = config('URL_FRONTEND', default='http://localhost:4200')
 
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://localhost:4200",
+    "https://luispaludo.github.io",
 ]
 
 ACCOUNT_AUTHENTICATION_METHOD = 'email'

@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.utils import IntegrityError
 
 from prize.models import Prizes, RedeemedPrizes
-from .serializers import PrizesSerializer, RedeemedPrizesSerializer
+from .serializers import PrizesSerializer, RedeemedPrizesSerializer, RedeemedPrizesQrCodeSerializer
 from user_data.models import History
 
 class PrizesViewSet(viewsets.ModelViewSet):
@@ -53,6 +53,7 @@ class RedeemedPrizesViewSet(viewsets.ModelViewSet):
             last_total_points = 0
 
         try:
+            response = super().create(request, *args, **kwargs)
             # Criar uma instância de History
             history = History(user=self.request.user, 
                             points=-prize.cost_in_points,  # Você precisa definir 'some_points_value'
@@ -60,9 +61,9 @@ class RedeemedPrizesViewSet(viewsets.ModelViewSet):
                             description=f'Prêmio Resgatado -> {prize.name}')  # Altere a descrição conforme necessário
                 
             if(last_total_points < prize.cost_in_points):
-                return Response({'Usuário não possui pontos suficientes'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'Usuário não possui pontos suficientes'}, status=status.HTTP_402_PAYMENT_REQUIRED)
                 
-            response = super().create(request, *args, **kwargs)
+            
             history.save()
             prize.save()
                 
@@ -73,3 +74,23 @@ class RedeemedPrizesViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user.id)
+
+class RedeemedPrizesQrCodeViewSet(viewsets.ModelViewSet):
+    queryset = RedeemedPrizes.objects.all()
+    serializer_class = RedeemedPrizesQrCodeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            prize_filter = self.request.query_params.get('prize', None)
+
+            if prize_filter is None or prize_filter == '':
+                return RedeemedPrizes.objects.none()  # Return an empty queryset if prize filter is not provided or empty
+
+            queryset = RedeemedPrizes.objects.filter(user=self.request.user)
+
+            if prize_filter:
+                queryset = queryset.filter(prize=prize_filter)
+            return queryset
+        
+        return RedeemedPrizes.objects.none()  # Return an empty queryset for unauthenticated users
