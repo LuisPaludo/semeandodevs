@@ -28,7 +28,8 @@ class Prizes(models.Model):
     times_used = models.IntegerField(default=0)
     cost_in_points = models.IntegerField(default=0,validators=[MinValueValidator(0)])
     category = models.ForeignKey(PrizeCategory, on_delete=models.SET_NULL, null=True, related_name='prizes')
-    logo = models.ImageField(upload_to='logos', null=True, blank=True,default='users_photos/default.png', validators=[validate_image_size], max_length=500)    
+    logo = models.ImageField(upload_to='logos', null=True, blank=True,default='users_photos/default.png', validators=[validate_image_size], max_length=500)   
+    expiry_date = models.DateField() 
 
     def __str__(self):
         return self.name

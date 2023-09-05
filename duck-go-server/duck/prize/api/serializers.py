@@ -1,4 +1,5 @@
-from rest_framework.serializers import ModelSerializer, StringRelatedField
+from rest_framework.serializers import ModelSerializer, StringRelatedField, ValidationError
+from datetime import date, timedelta
 
 from prize.models import Prizes, RedeemedPrizes
 
@@ -8,7 +9,19 @@ class PrizesSerializer(ModelSerializer):
 
     class Meta:
         model = Prizes
-        fields = ('name','id','description','cost_in_points','category','generated_by','discount_value','logo')
+        fields = ('name','id','description','cost_in_points','category','generated_by','discount_value','logo','times_to_be_used','expiry_date')
+
+    def validate_expiry_date(self, value):
+        today = date.today()
+        one_week_from_today = today + timedelta(weeks=1)
+
+        if value <= today:
+            raise ValidationError("The expiry date can't be today or in the past.")
+        
+        if value <= one_week_from_today:
+            raise ValidationError("The expiry date must be at least one week from today.")
+        
+        return value
 
 class RedeemedPrizesSerializer(ModelSerializer):
 

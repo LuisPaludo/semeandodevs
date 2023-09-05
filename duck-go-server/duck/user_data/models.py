@@ -1,4 +1,5 @@
 from datetime import date
+from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 from django.core.validators import MinValueValidator
@@ -14,7 +15,8 @@ def validate_image_size(value):
 
 class CustomUser(AbstractUser):
     cep = models.CharField(max_length=13)
-    cpf = models.CharField(max_length=20)
+    cpf = models.CharField(max_length=20, blank=True, null = True)
+    cnpj = models.CharField(max_length =20, blank=True, null = True, unique=True)
     addres_rua = models.CharField(max_length=255)
     address_UF = models.CharField(max_length=2)
     address_cidade = models.CharField(max_length=255)
@@ -23,6 +25,9 @@ class CustomUser(AbstractUser):
     data_nascimento = models.DateField(null=True, blank=True)
     accepted_terms = models.BooleanField(default=False)
     is_partner = models.BooleanField(default=False)
+    company_name = models.CharField(max_length=50,blank=True, null=True)
+    email_contact = models.EmailField(blank = True, null = True)
+    number_contact = models.IntegerField(blank=True, null = True)
 
     def __str__(self) -> str:
         return f'{self.username}'

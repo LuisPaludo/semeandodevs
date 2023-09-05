@@ -11,10 +11,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = (
-            'username', 'first_name','last_name', 'email', 'cep', 'cpf',
+            'username', 'first_name','last_name', 'email', 'cep', 'cpf','cnpj',
             'addres_rua', 'address_UF', 'address_cidade', 
-            'profile_photo', 'data_nascimento'
+            'profile_photo', 'data_nascimento','is_partner','company_name','email_contact','number_contact',
         )
+        read_only_fields = ('is_partner',)
 
 class HistorySerializer(serializers.ModelSerializer):    
     class Meta:
