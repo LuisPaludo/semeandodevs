@@ -1,13 +1,22 @@
 from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
+from datetime import date, timedelta
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 import random
 import string
 
 from user_data.models import CustomUser, History
 from user_data.models import validate_image_size
+
+def validate_expiry_date(value):
+    today = date.today()
+    one_week_from_today = today + timedelta(weeks=1)
+
+    if value < one_week_from_today:
+        raise ValidationError("The expiry date must be at least one week from today.")
 
 def generate_random_code():
     # Escolhe 20 caracteres aleatoriamente do conjunto de letras maiúsculas e dígitos
@@ -20,16 +29,16 @@ class PrizeCategory(models.Model):
         return self.name
 
 class Prizes(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
-    discount_value = models.DecimalField(max_digits=10, decimal_places=2)
     generated_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='generated_prizes')
-    times_to_be_used = models.IntegerField(default=0,validators=[MinValueValidator(0)])
+    times_to_be_used = models.IntegerField(default=0,validators=[MinValueValidator(1), MaxValueValidator(3000)])
     times_used = models.IntegerField(default=0)
-    cost_in_points = models.IntegerField(default=0,validators=[MinValueValidator(0)])
+    cost_in_points = models.IntegerField(default=0,validators=[MinValueValidator(100), MaxValueValidator(1000)])
     category = models.ForeignKey(PrizeCategory, on_delete=models.SET_NULL, null=True, related_name='prizes')
-    logo = models.ImageField(upload_to='logos', null=True, blank=True,default='users_photos/default.png', validators=[validate_image_size], max_length=500)   
-    expiry_date = models.DateField() 
+    logo = models.ImageField(upload_to='logos', null=True, blank=True, default='users_photos/default.png', validators=[validate_image_size], max_length=500)   
+    expiry_date = models.DateField(validators=[validate_expiry_date])
+    disabled = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -41,6 +50,7 @@ class RedeemedPrizes(models.Model):
     redeemed_at = models.DateTimeField(auto_now_add=True)
     code = models.CharField(max_length=20, unique=True)
     qr_code = models.URLField(null=True, blank=True)
+    is_used = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('user', 'prize')

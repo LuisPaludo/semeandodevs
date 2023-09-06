@@ -34,6 +34,9 @@ class HistoryViewSet(ModelViewSet):
         # Verificar se uma entrada foi criada nos últimos 5 minutos
         recent_entry = History.objects.filter(user=user, date__gte=five_minutes_ago).first()
 
+        if (self.request.user.is_partner):
+            return Response({'Parceiros não podem resgatar pontos'}, status = status.HTTP_403_FORBIDDEN)
+
         if recent_entry:
             return Response({
                 'error': 'Você só pode criar uma entrada a cada 5 minutos.'

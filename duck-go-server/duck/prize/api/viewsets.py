@@ -5,8 +5,8 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from django.db.utils import IntegrityError
 
-from prize.models import Prizes, RedeemedPrizes
-from .serializers import PrizesSerializer, RedeemedPrizesSerializer, RedeemedPrizesQrCodeSerializer
+from prize.models import Prizes, RedeemedPrizes, PrizeCategory
+from .serializers import PrizesSerializer, RedeemedPrizesSerializer, RedeemedPrizesQrCodeSerializer, PrizeCategorySerializer
 from user_data.models import History
 
 class PrizesViewSet(viewsets.ModelViewSet):
@@ -20,6 +20,29 @@ class PrizesViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Only partners can create coupons."}, status=status.HTTP_403_FORBIDDEN)
         
         return super().create(request, *args, **kwargs)
+    
+    def perform_create(self, serializer):
+        # Associar o "generated_by" ao usuário que está fazendo a requisição
+        serializer.save(generated_by=self.request.user, logo=self.request.user.profile_photo)
+    
+class PrizeCategoryViewSet(viewsets.ModelViewSet):
+    queryset = PrizeCategory.objects.all()
+    serializer_class = PrizeCategorySerializer
+    permission_classes = [IsAuthenticated]
+
+    
+class PartnerCreatedPrizesViewSet(viewsets.ModelViewSet):
+    queryset = Prizes.objects.all()
+    serializer_class = PrizesSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Prizes.objects.none()
+    
+        if(self.request.user.is_partner):
+            return Prizes.objects.filter(generated_by = self.request.user)
+        return Prizes.objects.none()    
         
 class RedeemedPrizesViewSet(viewsets.ModelViewSet):
     queryset = RedeemedPrizes.objects.all()
@@ -44,8 +67,18 @@ class RedeemedPrizesViewSet(viewsets.ModelViewSet):
         except Prizes.DoesNotExist:
             return Response({"detail": "Prize not found."}, status=status.HTTP_404_NOT_FOUND)
         
+        if prize.times_to_be_used == 0:
+            return Response({"detail: No coupouns left, choose another"}, status= status.HTTP_406_NOT_ACCEPTABLE)
+        
+        if prize.disabled:
+            return Response({"detail: coupon disabled"}, status= status.HTTP_423_LOCKED)
+        
         # Incrementar a contagem no Prizes
-        prize.times_used += 1        
+        prize.times_used += 1
+        prize.times_to_be_used = prize.times_to_be_used - 1
+
+        if(prize.times_to_be_used == 0):
+            prize.disabled = True       
 
         try:
             last_total_points = History.objects.filter(user=self.request.user).latest('date').total_points
@@ -62,8 +95,7 @@ class RedeemedPrizesViewSet(viewsets.ModelViewSet):
                 
             if(last_total_points < prize.cost_in_points):
                 return Response({'Usuário não possui pontos suficientes'}, status=status.HTTP_402_PAYMENT_REQUIRED)
-                
-            
+                            
             history.save()
             prize.save()
                 
