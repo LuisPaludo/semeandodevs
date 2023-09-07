@@ -9,7 +9,7 @@ from drf_yasg.views import get_schema_view
 
 from locations.api.viewsets import LocationViewSet, TuristicPointViewSet
 from prize.api.viewsets import PrizesViewSet, RedeemedPrizesViewSet, RedeemedPrizesQrCodeViewSet, PartnerCreatedPrizesViewSet, PrizeCategoryViewSet
-from user_data.api.viewsets import HistoryViewSet
+from user_data.api.viewsets import HistoryViewSet, PartnerDetailsViewSet
 
 # from user_data.api.viewsets import CustomRegisterView
 
@@ -22,6 +22,7 @@ router.register('resgatar-cupons-criados', PartnerCreatedPrizesViewSet )
 router.register('qr-code',RedeemedPrizesQrCodeViewSet)
 router.register("turistic-points", TuristicPointViewSet)
 router.register("history", HistoryViewSet, basename="history")
+router.register("partner-details", PartnerDetailsViewSet, basename="partner-details")
 
 
 schema_view = get_schema_view(

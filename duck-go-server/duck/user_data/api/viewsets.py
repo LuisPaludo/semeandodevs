@@ -3,19 +3,22 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound, PermissionDenied
 from datetime import datetime, timedelta
 from rest_framework import status
 from dj_rest_auth.registration.views import RegisterView
 from dj_rest_auth.views import UserDetailsView
+from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.viewsets import GenericViewSet
 
-from user_data.models import History
+from user_data.models import History, CustomUser
 
 from .serializers import CustomRegisterSerializer, CustomUserSerializer, HistorySerializer
 
 # Se você só precisa criar objetos usando uma rota dedicada, CreateAPIView é mais específico e pode ser apropriado para esse caso.
 
-class CustomRegisterView(RegisterView):
-    serializer_class = CustomRegisterSerializer
+# class CustomRegisterView(RegisterView):
+#     serializer_class = CustomRegisterSerializer
 
 class HistoryViewSet(ModelViewSet):
     serializer_class = HistorySerializer
@@ -60,5 +63,32 @@ class CustomVerifyEmailView(CreateAPIView):
     def get_queryset(self):
         return 
     
-class CustomUserDetailsView(UserDetailsView):
+# class CustomUserDetailsView(UserDetailsView):
+#     serializer_class = CustomUserSerializer
+
+
+class PartnerDetailsViewSet(RetrieveModelMixin, GenericViewSet):
+    queryset = CustomUser.objects.filter(is_partner=True)
     serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'company_name_slug'
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            partner = self.queryset.get(company_name_slug=kwargs['company_name_slug'])
+        except CustomUser.DoesNotExist:
+            raise NotFound("Não existe um parceiro com o nome da empresa fornecido")
+
+        if not partner.is_partner:
+            raise PermissionDenied("Você só pode acessar detalhes de usuários que são parceiros")
+
+        return Response({
+            'company_name': partner.company_name,
+            'email_contact': partner.email_contact,
+            'number_contact': partner.number_contact,
+            'addres_rua': partner.addres_rua,
+            'address_cidade': partner.address_cidade,
+            'profile_photo': partner.profile_photo.url,
+            'cep': partner.cep,
+            'company_description': partner.company_description,
+        }, status=status.HTTP_200_OK)

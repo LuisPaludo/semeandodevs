@@ -32,6 +32,7 @@ class Prizes(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     generated_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='generated_prizes')
+    generated_by_slug = models.SlugField(blank=True, null=True)
     times_to_be_used = models.IntegerField(default=0,validators=[MinValueValidator(1), MaxValueValidator(3000)])
     times_used = models.IntegerField(default=0)
     cost_in_points = models.IntegerField(default=0,validators=[MinValueValidator(100), MaxValueValidator(1000)])

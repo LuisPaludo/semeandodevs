@@ -13,7 +13,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = (
             'username', 'first_name','last_name', 'email', 'cep', 'cpf','cnpj',
             'addres_rua', 'address_UF', 'address_cidade', 
-            'profile_photo', 'data_nascimento','is_partner','company_name','email_contact','number_contact',
+            'profile_photo', 'data_nascimento','is_partner','company_name','email_contact','number_contact','company_description','company_name_slug',
         )
         read_only_fields = ('is_partner',)
 
