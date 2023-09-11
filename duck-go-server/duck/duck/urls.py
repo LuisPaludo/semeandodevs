@@ -7,22 +7,32 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
 
-from locations.api.viewsets import LocationViewSet, TuristicPointViewSet
-from prize.api.viewsets import PrizesViewSet, RedeemedPrizesViewSet, RedeemedPrizesQrCodeViewSet, PartnerCreatedPrizesViewSet, PrizeCategoryViewSet
+from locations.api.viewsets import LocationViewSet, TouristAttractionViewSet
+from prize.api.viewsets import (
+    PrizesViewSet,
+    UserRedeemedPrizesViewSet,
+    UserRedeemedPrizesQrCodeViewSet,
+    PartnerCreatedPrizesViewSet,
+    PrizeCategoryViewSet,
+    PartnerRedeemPrizeViewSet,
+    PartnerCheckRedeemPrizeViewSet,
+)
 from user_data.api.viewsets import HistoryViewSet, PartnerDetailsViewSet
-
-# from user_data.api.viewsets import CustomRegisterView
 
 router = routers.DefaultRouter()
 router.register("locais", LocationViewSet)
+router.register("pontos-turisticos", TouristAttractionViewSet)
 router.register("premios", PrizesViewSet)
-router.register('premios-categoria', PrizeCategoryViewSet)
-router.register('resgatar', RedeemedPrizesViewSet)
-router.register('resgatar-cupons-criados', PartnerCreatedPrizesViewSet )
-router.register('qr-code',RedeemedPrizesQrCodeViewSet)
-router.register("turistic-points", TuristicPointViewSet)
-router.register("history", HistoryViewSet, basename="history")
-router.register("partner-details", PartnerDetailsViewSet, basename="partner-details")
+router.register("categorias", PrizeCategoryViewSet)
+router.register("resgatar", UserRedeemedPrizesViewSet)
+router.register("premios/criados", PartnerCreatedPrizesViewSet)
+router.register("premios/premio/qr-code", UserRedeemedPrizesQrCodeViewSet)
+router.register("usuario/historico", HistoryViewSet, basename="history")
+router.register("parceiros/detalhes", PartnerDetailsViewSet, basename="partner-details")
+router.register(
+    "premios/usuarios/recuperar", PartnerRedeemPrizeViewSet, basename="recover"
+)
+router.register("checar", PartnerCheckRedeemPrizeViewSet, basename="check")
 
 
 schema_view = get_schema_view(

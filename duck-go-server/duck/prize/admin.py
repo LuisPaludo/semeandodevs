@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Prizes, PrizeCategory, RedeemedPrizes
+from .models import Prizes, PrizeCategory, UserRedeemedPrizes
 
 # Register your models here.
 
@@ -11,6 +11,6 @@ class PrizesAdmin(admin.ModelAdmin):
 class PrizeCategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
-@admin.register(RedeemedPrizes)
-class RedeemedPrizesAdmin(admin.ModelAdmin):
+@admin.register(UserRedeemedPrizes)
+class UserRedeemedPrizesAdmin(admin.ModelAdmin):
     list_display = ('__str__',)

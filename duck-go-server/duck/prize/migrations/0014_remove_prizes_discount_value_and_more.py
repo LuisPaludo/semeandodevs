@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='prizes',
             name='expiry_date',
-            field=models.DateField(validators=[prize.models.validate_expiry_date]),
+            field=models.DateField(),
         ),
         migrations.AlterField(
             model_name='prizes',
